@@ -1,10 +1,7 @@
 {
-  "name": "node-js-getting-started",
-  "version": "0.3.0",
-  "description": "A sample Node.js app using Express 4",
-  "engines": {
-    "node": "8.9.1"
-  },
+  "name": "pizzamachine",
+  "version": "0.0.1",
+  "description": "Pizza machine",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
@@ -21,12 +18,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/heroku/node-js-getting-started"
+    "url": "https://github.com/marceloabk/pizzamachine"
   },
   "keywords": [
-    "node",
-    "heroku",
-    "express"
+    "pizza",
+    "fga",
+    "unb"
   ],
   "license": "MIT"
 }

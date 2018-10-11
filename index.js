@@ -1,6 +1,7 @@
 const express = require('express')
 const path = require('path')
 const { Client } = require('pg')
+
 const client = new Client({
   user: 'postgres',
   host: 'db'
