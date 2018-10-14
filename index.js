@@ -26,3 +26,5 @@ express()
   .get('/', (req, res) => res.render('pages/index'))
   .use('/users', usersRouter)
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
+
+module.exports = client

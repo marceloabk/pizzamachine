@@ -8,8 +8,7 @@ body {
 }
 
 .container {
-  max-width: 500px;
-  min-width: 400px;
+  max-width: 60%;
   width: 100%;
   margin: 0 auto;
   position: relative;
