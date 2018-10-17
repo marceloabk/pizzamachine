@@ -10,6 +10,17 @@ router.use(bodyParser.urlencoded({
 
 router.use(bodyParser.json());
 
+router.get('/list', (req, res) => {
+
+  var list = []
+  knex.select().table('person') //mayber filter by 'role'
+    .then(function (rows) {
+      list = rows
+      console.log(list)
+      res.render('pages/users_list', {users:list});
+    }).catch((err) => { console.log( err); throw err });
+});
+
 router.get('/register', (req, res) => {
 	res.render('pages/sign_in');
 });
@@ -23,11 +34,6 @@ router.post('/register', (req, res) =>{
   newUser.setName(data.name);
   newUser.setEmail(data.email);
   newUser.setPassword(data.password); // HASH THIS!!
-
-  console.log(newUser.name);
-  console.log(newUser.email);
-  console.log(newUser.password);
-  console.log(newUser.role);
 
   if(newUser.isValid()){
     newUser.saveUser(newUser);

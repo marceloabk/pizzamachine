@@ -1,0 +1,25 @@
+<html>
+<link rel="stylesheet" type="text/css" href="/stylesheets/users_list.css" />
+<body>
+  <div class="table-users">
+     <div class="header">Lista de usuários cadastrados</div>
+
+     <table cellspacing="0">
+        <tr>
+           <th>Name</th>
+           <th>Email</th>
+           <th>Ação</th>
+        </tr>
+
+        <% users.forEach(function(user){ %>
+          <tr>
+              <td><%= user.name %></td>
+              <td><%= user.email %></td>
+              <td>Editar  Deletar</td>
+          </tr>
+        <% })%>
+
+     </table>
+  </div>
+</body>
+</html>
