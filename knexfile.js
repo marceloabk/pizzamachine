@@ -6,7 +6,8 @@ module.exports = {
     client: 'pg',
     connection: {
       user: 'postgres',
-      host: 'db'
+      host: 'db',
+      database: 'pizza'
     }
   },
 };

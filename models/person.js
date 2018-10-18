@@ -22,28 +22,29 @@ Person.prototype.setPassword = function (password){
 };
 
 Person.prototype.search = function (id) {
-  return knex('person').where('id', id).first();
+  return knex('PERSON').where('id', id).first();
 };
 
 Person.prototype.getOneByEmail = function(email) {
-  return knex('person').where('email', email).first();
+  return knex('PERSON').where('email', email).first();
 };
 
 Person.prototype.saveUser = function(newUser){
 
   const client = new Client({
     user: 'postgres',
-    host: 'db'
-  })
+    host: 'db',
+    database: 'pizza'
+  });
 
-  const PORT = process.env.PORT || 5000;
   (async function(){
     await client.connect()
-    const res = await client.query("INSERT INTO PERSON(role, name, email, password) VALUES ($1, $2, $3, $4)",
+    const res = await client.query("INSERT INTO \"PERSON\"(role, name, email, password) VALUES ($1, $2, $3, $4)",
                 [newUser.role, newUser.name, newUser.email, newUser.password]);
     await client.end()
     console.log('Usuário salvo com sucesso');
   })().catch(e => console.error(e.stack));
+
 
 }
 

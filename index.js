@@ -5,7 +5,8 @@ const usersRouter = require("./routes/users");
 
 const client = new Client({
   user: 'postgres',
-  host: 'db'
+  host: 'db',
+  database: 'pizza'
 })
 
 const PORT = process.env.PORT || 5000;
@@ -26,5 +27,3 @@ express()
   .get('/', (req, res) => res.render('pages/index'))
   .use('/users', usersRouter)
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
-
-module.exports = client

@@ -11,12 +11,10 @@ router.use(bodyParser.urlencoded({
 router.use(bodyParser.json());
 
 router.get('/list', (req, res) => {
-
   var list = []
   knex.select().table('person') //mayber filter by 'role'
     .then(function (rows) {
       list = rows
-      console.log(list)
       res.render('pages/users_list', {users:list});
     }).catch((err) => { console.log( err); throw err });
 });
@@ -30,18 +28,26 @@ router.post('/register', (req, res) =>{
   // hash the password
 
   var data = req.body.user;
-  newUser = new Person('client');
+  newUser = new Person('client'); //Create the case of signning in a employee
   newUser.setName(data.name);
   newUser.setEmail(data.email);
   newUser.setPassword(data.password); // HASH THIS!!
 
   if(newUser.isValid()){
     newUser.saveUser(newUser);
-    // saveUser(data);
     res.redirect('/');
   }else{
 		console.log('Usuário inválido');
 	};
+});
+
+router.delete('/delete/:user_id', (req, res) =>{
+  console.log(user_id)
+  // knex.select().table('person').where('id', user_id) //mayber filter by 'role'
+  // .then(function (rows) {
+  //   console.log('Found him!')
+  // }).catch((err) => { console.log( err); throw err });
+
 });
 
 
