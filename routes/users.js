@@ -3,7 +3,7 @@ const router = express.Router();
 const bodyParser = require("body-parser");
 const knex = require('../db/connection');
 const User = require('../models/user');
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 
 router.use(bodyParser.urlencoded({
     extended: true
@@ -27,7 +27,12 @@ router.get('/register', (req, res) => {
 router.post('/register', (req, res) =>{
 
   var data = req.body.user;
-  userCreation('client', data, res)
+  var user = new User('client', data.name, data.email, data.phone, '', data.socialId, data.socialUserId);
+  
+  user.setPassword(data.password);
+  user.saveUser();
+
+  res.redirect('/')
 });
 
 router.get('/register/employee', (req, res) => {
@@ -37,7 +42,13 @@ router.get('/register/employee', (req, res) => {
 router.post('/register/employee', (req, res) =>{
 
   var data = req.body.user;
-  userCreation('employee', data, res)
+  
+  var user = new User('employee', data.name, data.email, '', data.socialId, data.socialUserId);
+  
+  user.setPassword(data.password);
+  user.saveUser();
+
+  res.redirect('/')
 });
 
 router.get('/delete/:user_id', (req, res) =>{
@@ -94,23 +105,20 @@ router.post('/edit/:user_id', (req, res) =>{
   .catch((err) => {console.log('erro' + err)});
 });
 
-function userCreation(role, data, res){
-  const saltRounds = 10; // rounds of hashing
+// exports.userCreation = function userCreation(role, data){
+//   const saltRounds = 10; // rounds of hashing
 
-  newUser = new User(role);
-  newUser.setName(data.name);
-  newUser.setEmail(data.email);
+//   newUser = new User(role, data.name, data.email, '', data.socialId, data.socialUserId);
 
-  bcrypt.hash(data.password, saltRounds, function(err, hash) {
-    newUser.setPassword(hash);
-    if(newUser.isValid()){
-      newUser.saveUser(newUser);
-      res.redirect('/');
-    }else{
-      console.log('Dados de funcionário inválidos');
-    }
-  });
+//   bcrypt.hash(data.password, saltRounds, function(err, hash) {
+//     newUser.setPassword(hash);
+//     if(newUser.isValid()){
+//       newUser.saveUser(newUser);
+//     }else{
+//       console.log('Dados de funcionário inválidos');
+//     }
+//   });
 
-}
+// }
 
 module.exports = router;

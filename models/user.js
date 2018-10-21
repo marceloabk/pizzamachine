@@ -1,54 +1,72 @@
 const knex = require('../db/connection');
 const { Client } = require('pg');
+const crypto = require('crypto');
 
-function Person(role){
+function User(role, name, email, phone, password, socialId, socialUserId){
 
   this.role = role;
-  this.name = '';
-  this.email = '';
+  this.name = name;
+  this.email = email;
+  this.phone = phone;
+  this.password = password;
+  this.socialId = socialId;
+  this.socialUserId = socialUserId;
 
 };
 
-Person.prototype.setName = function (name){
+User.prototype.setName = function (name){
     this.name = name.trim();
 };
 
-Person.prototype.setEmail = function (email){
+User.prototype.setEmail = function (email){
   this.email = email.trim();
 };
 
-Person.prototype.setPassword = function (password){
-    this.password = password;
+User.prototype.setPassword = function (password){
+  const hash = crypto.createHmac('sha256', process.env.HASH_SECRET)
+    .update(password)
+    .digest('hex');
+
+  this.password = hash;
 };
 
-Person.prototype.search = function (id) {
+User.prototype.setSocialId = function (socialId){
+  this.socialId = socialId;
+};
+
+User.prototype.setSocialUserId = function (socialUserId){
+  this.socialUserId = socialUserId;
+};
+
+User.prototype.search = function (id) {
   return knex('USER').where('id', id).first();
 };
 
-Person.prototype.getOneByEmail = function(email) {
+User.prototype.getOneByEmail = function(email) {
   return knex('USER').where('email', email).first();
 };
 
-Person.prototype.saveUser = function(newUser){
+User.prototype.saveUser = function(){
 
-  const client = new Client({
-    user: 'postgres',
-    host: 'db',
-    database: 'pizza'
-  });
-
-  (async function(){
-    await client.connect()
-    const res = await client.query("INSERT INTO \"USER\"(role, name, email, password) VALUES ($1, $2, $3, $4)",
-                [newUser.role, newUser.name, newUser.email, newUser.password]);
-    await client.end()
-    console.log('Usuário salvo com sucesso');
-  })().catch(e => console.error(e.stack));
-
+  if(this.isValid()) {
+    knex("USER").insert({
+      role: this.role, 
+      name: this.name,
+      email: this.email,
+      phone: this.phone,
+      password: this.password,
+      social_media_id: this.socialId,
+      social_media_user_id: this.socialUserId
+    }).catch((err) => {
+      console.log(err);
+    });
+  }else {
+    console.log('Dados de funcionário inválidos');
+  }
 
 }
 
-Person.prototype.isValid= function() {
+User.prototype.isValid= function() {
 	return typeof this.email == 'string' &&
 					this.email != '' &&
           this.checkRegistredEmail(this.email) != false &&
@@ -56,7 +74,7 @@ Person.prototype.isValid= function() {
 					this.name != '';
 }
 
-Person.prototype.checkRegistredEmail = function(email){
+User.prototype.checkRegistredEmail = function(email){
   // fetching users with the same email
   knex.select().table('USER').where('email', email)
     .then((rows) => {
@@ -69,4 +87,4 @@ Person.prototype.checkRegistredEmail = function(email){
     }).catch((err) => { console.log( err); throw err });
 }
 
-module.exports = Person;
+module.exports = User;
