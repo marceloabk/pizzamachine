@@ -2,12 +2,25 @@ const knex = require('./connection');
 
 console.log('Executando seeds para inserção de usuários fake.')
 
-knex('USER').insert([{role: 'client', name: 'FAKE1', email: 'fake1@gmail.com', phone:'332211', password: '123456'} ,
-                    {role: 'client', name: 'FAKE2', email: 'fake2@gmail.com', phone:'332211',  password: '123456'} ,
-                    {role: 'client', name: 'FAKE3', email: 'fake3@gmail.com', phone:'332211',  password: '123456'} ,
-                    {role: 'client', name: 'FAKE4', email: 'fake4@gmail.com', phone:'332211',  password: '123456'} ,
-                    {role: 'client', name: 'FAKE5', email: 'fake5@gmail.com', phone:'332211',  password: '123456'} ,
-                    {role: 'client', name: 'FAKE6', email: 'fake6@gmail.com', phone:'332211',  password: '123456'} ,
-                    {role: 'client', name: 'FAKE7', email: 'fake7@gmail.com', phone:'332211',  password: '123456'} ])
-  .catch((err) => { console.log( err); throw err });
+console.log('Inserindo clientes')
+knex('USER').max('id').first()
+.then((user) => {
+  if(user.max == null){user.max=1}
+  for(var aux=user.max; aux<=user.max+10; aux++){
+    knex('USER').insert({role: 'client', name: 'Cliente_FAKE_'+aux , email: 'c_fake'+aux+'@gmail.com', phone:'332211', password: '123456'})
+    .catch((err) => { console.log( err); throw err });
+  }
+
+}).catch((err) => { console.log( err); throw err });
+
+
+knex('USER').max('id').first()
+.then((user) => {
+  if(user.max == null){user.max=1}
+  for(var aux=user.max; aux<=user.max+5; aux++){
+    knex('USER').insert({role: 'employee', name: 'Funcionário_FAKE_'+aux , email: 'e_fake'+aux+'@gmail.com', phone:'332211', password: '123456'})
+    .catch((err) => { console.log( err); throw err });
+  }
+
+}).catch((err) => { console.log( err); throw err });
 console.log('Execução encerrada')
