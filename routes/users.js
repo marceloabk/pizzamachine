@@ -3,6 +3,7 @@ const router = express.Router();
 const bodyParser = require("body-parser");
 const knex = require('../db/connection');
 const User = require('../models/user');
+const bcrypt = require('bcrypt');
 
 router.use(bodyParser.urlencoded({
     extended: true
@@ -94,17 +95,22 @@ router.post('/edit/:user_id', (req, res) =>{
 });
 
 function userCreation(role, data, res){
-  newUser = new User(role); //Create the case of signning in a employee
+  const saltRounds = 10; // rounds of hashing
+
+  newUser = new User(role);
   newUser.setName(data.name);
   newUser.setEmail(data.email);
-  newUser.setPassword(data.password); // HASH THIS!!
 
-  if(newUser.isValid()){
-    newUser.saveUser(newUser);
-    res.redirect('/');
-  }else{
-    console.log('Dados de funcionário inválidos');
-  }
+  bcrypt.hash(data.password, saltRounds, function(err, hash) {
+    newUser.setPassword(hash);
+    if(newUser.isValid()){
+      newUser.saveUser(newUser);
+      res.redirect('/');
+    }else{
+      console.log('Dados de funcionário inválidos');
+    }
+  });
+
 }
 
 module.exports = router;
