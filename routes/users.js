@@ -51,9 +51,48 @@ router.get('/delete/:user_id', (req, res) =>{
   .then(()=>{console.log('Usuário removido ' + user_id)})
   .catch((err) => { console.log( err); throw err });
 
-  res.redirect('back');
+  //console.log(req.get('referer'))
+  res.redirect(req.get('referer'));
 
 });
 
+router.get('/edit/:user_id', (req, res) =>{
+  //validate autentication to edit other users
+
+  var user_id = req.params.user_id;
+
+  var user;
+  var name, email, phone = '';
+  knex.select().from('USER').where('id', user_id).first()
+  .then((query) => {
+    user = query;
+    console.log(user.name);
+    res.render('pages/edit', {user: user});
+  })
+  .catch((err) => {console.log('Usuário inexistente')});
+});
+
+router.post('/edit/:user_id', (req, res) =>{
+  //validate autentication to edit other users
+
+  var user_id = req.params.user_id;
+  var data = req.body.user;
+
+  var new_name = data.name;
+  var new_email = data.email;
+  var new_phone = data.phone;
+
+  console.log(new_name);
+
+  knex('USER').where('id', user_id).update({
+    name: new_name,
+    email: new_email,
+    phone: new_phone
+  })
+  .then(() => {
+    res.redirect('/users/list')
+  })
+  .catch((err) => {console.log('erro' + err)});
+});
 
 module.exports = router;
