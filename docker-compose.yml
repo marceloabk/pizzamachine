@@ -4,7 +4,7 @@ services:
     build: .
     image: pizzamachine
     volumes:
-      - $PWD:/usr/app
+      - .:/usr/app
       - /usr/app/node_modules
     ports:
       - 5000:5000
@@ -12,3 +12,7 @@ services:
   db:
     image: postgres
     restart: always
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=pizza

@@ -1,0 +1,31 @@
+<html>
+<link rel="stylesheet" type="text/css" href="/stylesheets/users_list.css" />
+<body>
+  <div class="table-users">
+     <div class="header">Lista de usuários cadastrados</div>
+
+     <table cellspacing="0">
+        <tr>
+           <th>Name</th>
+           <th>Email</th>
+           <th>Ação</th>
+        </tr>
+
+        <% users.forEach(function(user){ %>
+          <tr>
+              <td><%= user.name %></td>
+              <td><%= user.email %></td>
+              <td>Editar  <a id='delete' href="delete/<%= user.id %>">Deletar</a></td>
+          </tr>
+        <% })%>
+
+     </table>
+  </div>
+</body>
+
+<script type="text/javascript">
+  $("#delete").click(function(){
+    location.reload(true);
+  });
+</script>
+</html>

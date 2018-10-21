@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+<link rel="stylesheet" type="text/css" href="/stylesheets/sign_in.css" />
+<body>
+  <div class="container">
+    <form id="contact" action="" method="post">
+      <h3>Keep calm and eat pizza!</h3>
+      <h4>Cadastre-se</h4>
+      <fieldset>
+        <input placeholder="Digite o seu nome" type="text" tabindex="1" name='user[name]' required autofocus>
+      </fieldset>
+      <fieldset>
+        <input placeholder="Digite o seu e-mail" type="email" tabindex="2" name='user[email]' required>
+      </fieldset>
+      <fieldset>
+        <input placeholder="Digite a sua senha" type="password" tabindex="2" name='user[password]' required>
+      </fieldset>
+      <fieldset>
+        <input placeholder="Confirme a senha" type="password" tabindex="2" name='user[password_2]' required>
+      </fieldset>
+      <fieldset>
+        <button name="submit" type="submit" id="contact-submit" data-submit="...Enviando">Enviar</button>
+      </fieldset>
+    </form>
+  </div>
+</body>
+</html>
