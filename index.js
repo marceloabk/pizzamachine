@@ -1,33 +1,25 @@
-const express = require('express')
 const path = require('path')
 const authRoutes = require('./routes/auth-routes')
 const passportSetup = require('./config/passport-setup')
-const { Client } = require('pg')
-const usersRouter = require("./routes/users");
+const usersRouter = require("./routes/users")
 
-const client = new Client({
-  user: 'postgres',
-  host: 'db',
-  database: 'pizza'
+const express = require('express')
+const app =  express()
+
+const PORT = process.env.PORT | 5000
+
+app.use(express.static(path.join(__dirname, 'public')))
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'ejs')
+
+app.get('/', (req, res) => {
+  res.render('pages/index')
+})
+app.get('/login', (req, res) => {
+  res.render('pages/login')
 })
 
-const PORT = process.env.PORT || 5000;
+app.use('/auth', authRoutes)
+app.use('/users', usersRouter)
 
-(async function(){
-  await client.connect()
-
-  const res = await client.query('SELECT $1::text as message', ['Hello world!'])
-  console.log(res.rows[0].message) // Hello world!
-  await client.end()
-
-})();
-
-express()
-  .use(express.static(path.join(__dirname, 'public')))
-  .set('views', path.join(__dirname, 'views'))
-  .set('view engine', 'ejs')
-  .get('/', (req, res) => res.render('pages/index'))
-  .get('/login', (req, res) => res.render('pages/login'))
-  .use('/auth', authRoutes)
-  .use('/users', usersRouter)
-  .listen(PORT, () => console.log(`Listening on ${ PORT }`))
+app.listen(PORT, () => console.log(`Such pizza on ${ PORT }`))
