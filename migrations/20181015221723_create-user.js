@@ -7,7 +7,7 @@ exports.up = function(knex, Promise) {
       table.text('email').unique().notNullable();
       table.text('phone');
       table.text('password');
-      table.text('social_media_id')
+      table.integer('social_media_id')
       table.text('social_media_code')
   });
 };
