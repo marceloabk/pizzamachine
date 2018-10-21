@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bodyParser = require("body-parser");
 const knex = require('../db/connection');
-const Person = require('../models/person');
+const User = require('../models/user');
 
 router.use(bodyParser.urlencoded({
     extended: true
@@ -12,7 +12,7 @@ router.use(bodyParser.json());
 
 router.get('/list', (req, res) => {
   var list = []
-  knex.select().table('person') //mayber filter by 'role'
+  knex.select().table('USER') //mayber filter by 'role'
     .then(function (rows) {
       list = rows
       res.render('pages/users_list', {users:list});
@@ -28,7 +28,7 @@ router.post('/register', (req, res) =>{
   // hash the password
 
   var data = req.body.user;
-  newUser = new Person('client'); //Create the case of signning in a employee
+  newUser = new User('client'); //Create the case of signning in a employee
   newUser.setName(data.name);
   newUser.setEmail(data.email);
   newUser.setPassword(data.password); // HASH THIS!!
@@ -41,12 +41,17 @@ router.post('/register', (req, res) =>{
 	};
 });
 
-router.delete('/delete/:user_id', (req, res) =>{
-  console.log(user_id)
-  // knex.select().table('person').where('id', user_id) //mayber filter by 'role'
-  // .then(function (rows) {
-  //   console.log('Found him!')
-  // }).catch((err) => { console.log( err); throw err });
+router.get('/delete/:user_id', (req, res) =>{
+  //validate autentication to delete other users
+
+  var user_id = req.params.user_id;
+  console.log('Removendo usuário de id: ' + user_id);
+
+  knex('USER').where('id', user_id).del()
+  .then(()=>{console.log('Usuário removido ' + user_id)})
+  .catch((err) => { console.log( err); throw err });
+
+  res.redirect('back');
 
 });
 

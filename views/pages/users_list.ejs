@@ -15,11 +15,17 @@
           <tr>
               <td><%= user.name %></td>
               <td><%= user.email %></td>
-              <td>Editar  Deletar</td>
+              <td>Editar  <a id='delete' href="delete/<%= user.id %>">Deletar</a></td>
           </tr>
         <% })%>
 
      </table>
   </div>
 </body>
+
+<script type="text/javascript">
+  $("#delete").click(function(){
+    location.reload(true);
+  });
+</script>
 </html>

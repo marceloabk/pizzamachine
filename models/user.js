@@ -22,11 +22,11 @@ Person.prototype.setPassword = function (password){
 };
 
 Person.prototype.search = function (id) {
-  return knex('PERSON').where('id', id).first();
+  return knex('USER').where('id', id).first();
 };
 
 Person.prototype.getOneByEmail = function(email) {
-  return knex('PERSON').where('email', email).first();
+  return knex('USER').where('email', email).first();
 };
 
 Person.prototype.saveUser = function(newUser){
@@ -39,7 +39,7 @@ Person.prototype.saveUser = function(newUser){
 
   (async function(){
     await client.connect()
-    const res = await client.query("INSERT INTO \"PERSON\"(role, name, email, password) VALUES ($1, $2, $3, $4)",
+    const res = await client.query("INSERT INTO \"USER\"(role, name, email, password) VALUES ($1, $2, $3, $4)",
                 [newUser.role, newUser.name, newUser.email, newUser.password]);
     await client.end()
     console.log('Usuário salvo com sucesso');
@@ -62,7 +62,7 @@ Person.prototype.isValid= function() {
 
 Person.prototype.checkRegistredEmail = function(email){
   // fetching users with the same email
-  knex.select().table('person').where('email', email)
+  knex.select().table('USER').where('email', email)
     .then((rows) => {
       console.log(rows.length)
       if(rows.length > 0){
