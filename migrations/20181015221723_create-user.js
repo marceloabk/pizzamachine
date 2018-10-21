@@ -5,6 +5,7 @@ exports.up = function(knex, Promise) {
       table.text('role');
       table.text('name');
       table.text('email').unique().notNullable();
+      table.text('phone');
       table.text('password');
       table.text('social_media_id')
       table.text('social_media_code')
