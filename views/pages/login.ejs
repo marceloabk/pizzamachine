@@ -6,21 +6,24 @@
     <% include ../partials/header.ejs %>
   </head>
   <body>
+      <section id="contact" class="section-padding">
         <% include ../partials/nav.ejs %>
-      <nav>
-          <ul>
-              <li><a href="/auth/logout">Logout</a></li>
-              <li><a href="/auth/login">Login</a></li>
-              <li><a href="/">Homepage</a></li>
-          </ul>
-      </nav>
-      <header>
-          <h2>Login using...</h2>
-      </header>
-      <main>
-          <a class="google-btn" href="/auth/google">Google+</a>
-          <a class="facebook-btn" href="/auth/facebook">Facebook</a>
-      </main>
-      
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h1 class="header-h">Login</h1>
+                    <p class="header-p">Escolha a forma de login</p>
+                </div>
+            </div>
+            <div class="row">
+                    <div class="col-md-12 text-center">
+                            <a class="btn btn-imfo btn-read-more" href="/auth/google">Google+</a>
+                            <a class="btn btn-imfo btn-read-more" href="/auth/facebook">Facebook</a>
+                    </div>
+                </div>
+        </div>
+        <% include ../partials/footer.ejs %>
+
+    </section>
   </body>
 </html>

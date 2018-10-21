@@ -13,8 +13,9 @@ passport.use(
     clientSecret: process.env.GOOGLE_CLIENT_SECRET
   }, (accessToken, refreshToken, profile, done) => {
    // passport callback function
-   console.log(`User: ${profile.displayName}.`);
-   console.log(`E-mail: ${profile.emails[0].value}.`);
+  //  console.log(`User: ${profile.displayName}.`);
+  //  console.log(`E-mail: ${profile.emails[0].value}.`);
+  console.log(`User: ${JSON.stringify(profile)}.`);
    console.log('passport google callback function fired');
   })
 ) 

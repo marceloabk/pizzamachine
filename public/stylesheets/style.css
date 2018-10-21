@@ -78,7 +78,8 @@ table {
     transition: 0.3s
 }
 .sidenav a:hover, .offcanvas a:focus{
-    color: #f1f1f1;
+    /* color: #f1f1f1; */
+    color: #FFB03B;
 }
 .closebtn {
     position: absolute;
@@ -93,7 +94,8 @@ table {
 }
 .menu-icon
 {
-    color: #fff;
+    /* color: #fff; */
+    color: #FFB03B;
     font-size: 30px;
     margin-top: 30px;
     cursor: pointer;
