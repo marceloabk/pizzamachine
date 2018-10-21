@@ -3,6 +3,7 @@ const router = express.Router();
 const bodyParser = require("body-parser");
 const knex = require('../db/connection');
 const User = require('../models/user');
+const bcrypt = require('bcrypt');
 
 router.use(bodyParser.urlencoded({
     extended: true
@@ -12,7 +13,7 @@ router.use(bodyParser.json());
 
 router.get('/list', (req, res) => {
   var list = []
-  knex.select().table('USER') //mayber filter by 'role'
+  knex.select().table('USER').orderBy('name') //mayber filter by 'role'
     .then(function (rows) {
       list = rows
       res.render('pages/users_list', {users:list});
@@ -24,21 +25,19 @@ router.get('/register', (req, res) => {
 });
 
 router.post('/register', (req, res) =>{
-  // TODO:
-  // hash the password
 
   var data = req.body.user;
-  newUser = new User('client'); //Create the case of signning in a employee
-  newUser.setName(data.name);
-  newUser.setEmail(data.email);
-  newUser.setPassword(data.password); // HASH THIS!!
+  userCreation('client', data, res)
+});
 
-  if(newUser.isValid()){
-    newUser.saveUser(newUser);
-    res.redirect('/');
-  }else{
-		console.log('Usuário inválido');
-	};
+router.get('/register/employee', (req, res) => {
+	res.render('pages/sign_in_employee');
+});
+
+router.post('/register/employee', (req, res) =>{
+
+  var data = req.body.user;
+  userCreation('employee', data, res)
 });
 
 router.get('/delete/:user_id', (req, res) =>{
@@ -94,5 +93,24 @@ router.post('/edit/:user_id', (req, res) =>{
   })
   .catch((err) => {console.log('erro' + err)});
 });
+
+function userCreation(role, data, res){
+  const saltRounds = 10; // rounds of hashing
+
+  newUser = new User(role);
+  newUser.setName(data.name);
+  newUser.setEmail(data.email);
+
+  bcrypt.hash(data.password, saltRounds, function(err, hash) {
+    newUser.setPassword(hash);
+    if(newUser.isValid()){
+      newUser.saveUser(newUser);
+      res.redirect('/');
+    }else{
+      console.log('Dados de funcionário inválidos');
+    }
+  });
+
+}
 
 module.exports = router;

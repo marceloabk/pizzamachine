@@ -53,11 +53,7 @@ Person.prototype.isValid= function() {
 					this.email != '' &&
           this.checkRegistredEmail(this.email) != false &&
 					typeof this.name == 'string' &&
-					this.name != '' &&
-					typeof this.password == 'string' &&
-					this.password != '' &&
-					this.password.length >= 5 &&
-					this.password == this.password;
+					this.name != '';
 }
 
 Person.prototype.checkRegistredEmail = function(email){
