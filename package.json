@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
-    "test": "nodemon test.js",
+    "test": "jasmine",
     "migrate": "knex migrate:latest"
   },
   "dependencies": {
@@ -21,8 +21,8 @@
     "socket.io": "^2.1.1"
   },
   "devDependencies": {
-    "request": "^2.81.0",
-    "tape": "^4.7.0"
+    "jasmine": "^3.2.0",
+    "request": "^2.81.0"
   },
   "repository": {
     "type": "git",

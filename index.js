@@ -31,4 +31,6 @@ app.post('/order', (req, res) => {
 app.use('/auth', authRoutes)
 app.use('/users', usersRouter)
 
-http.listen(PORT, () => console.log(`Such pizza on ${ PORT }`))
+var server = http.listen(PORT, () => console.log(`Such pizza on ${ PORT }`))
+
+module.exports = server
