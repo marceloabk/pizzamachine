@@ -19,7 +19,7 @@ describe("GET /", () => {
     });
 
     it('should fail on POST', function (done) {
-        request.post(endpoint, {json: true, body: {}}, function (error, response) {
+        request.post(endpoint, {json: true, body: {}}, function (error, response) {            
             expect(response.statusCode).toEqual(404);
             done();
         });

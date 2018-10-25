@@ -8,7 +8,7 @@
     "test": {
       "addons": ["heroku-postgresql:in-dyno"],
       "scripts": {
-        "test-setup": "npm install jasmine",
+        "test-setup": "heroku local",
         "test": "npm test"
       }
     }
