@@ -8,7 +8,7 @@
     "test": {
       "addons": ["heroku-postgresql:in-dyno"],
       "scripts": {
-        "test-setup": "heroku local",
+        "test-setup": "node index.js >/dev/null 2>&1 & sleep 5",
         "test": "npm test"
       }
     }
