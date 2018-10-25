@@ -7,7 +7,7 @@ const app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
 
-const PORT = process.env.PORT | 5000
+const PORT = process.env.PORT || 5000
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.json())
