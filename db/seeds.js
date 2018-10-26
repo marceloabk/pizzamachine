@@ -3,7 +3,7 @@ const knex = require('./connection');
 console.log('Executando seeds para inserção de usuários fake.')
 
 console.log('Inserindo clientes')
-knex('USER').max('id').first()
+knex('USER').max('id').where("role", 'client').first()
 .then((user) => {
   if(user.max == null){user.max=1}
   for(var aux=user.max; aux<=user.max+10; aux++){
@@ -14,7 +14,7 @@ knex('USER').max('id').first()
 }).catch((err) => { console.log( err); throw err });
 
 
-knex('USER').max('id').first()
+knex('USER').max('id').where("role", 'employee').first()
 .then((user) => {
   if(user.max == null){user.max=1}
   for(var aux=user.max; aux<=user.max+5; aux++){
