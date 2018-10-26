@@ -3,6 +3,7 @@ services:
   web:
     build: .
     image: pizzamachine
+    env_file: .env
     volumes:
       - .:/usr/app
       - /usr/app/node_modules
@@ -12,7 +13,7 @@ services:
   db:
     image: postgres
     restart: always
-    volumes:
-      - ./data:/var/lib/postgresql/data
+    # volumes:
+    #   - ./data:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=pizza
