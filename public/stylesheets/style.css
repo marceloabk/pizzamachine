@@ -498,6 +498,7 @@ table {
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-right: 4px;
+    border-radius: 50%;
     /* background-color: rgba(0, 0, 0, 0.4) */
     /* color: #FFB03B; */
 }
