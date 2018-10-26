@@ -4,8 +4,8 @@ const usersRouter = require('./routes/users')
 const passportSetup = require('./config/passport-setup')
 
 const { Client } = require('pg')
-const usersRouter = require("./routes/users")
-const makePizza = require('./routes/make_pizza')
+// const usersRouter = require("./routes/users")
+// const makePizza = require('./routes/make_pizza')
 
 const express = require('express')
 const app = express()

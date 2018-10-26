@@ -13,10 +13,7 @@ services:
   db:
     image: postgres
     restart: always
-<<<<<<< HEAD
     # volumes:
     #   - ./data:/var/lib/postgresql/data
-=======
->>>>>>> sockt.io
     environment:
       - POSTGRES_DB=pizza
