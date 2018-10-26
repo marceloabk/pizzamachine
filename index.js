@@ -1,38 +1,43 @@
-const express = require('express')
 const path = require('path')
 const authRoutes = require('./routes/auth-routes')
+const usersRouter = require('./routes/users')
 const passportSetup = require('./config/passport-setup')
+
 const { Client } = require('pg')
 const usersRouter = require("./routes/users")
 const makePizza = require('./routes/make_pizza')
 
-const client = new Client({
-  user: 'postgres',
-  host: 'db',
-  database: 'pizza'
+const express = require('express')
+const app = express()
+const http = require('http').Server(app)
+const io = require('socket.io')(http)
+
+const PORT = process.env.PORT || 5000
+
+
+app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.json())
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'ejs')
+
+app.get('/', (req, res) => {
+  res.render('pages/index', {ingredients: ingredients, pizzas: pizzas})
 })
 
-const PORT = process.env.PORT || 5000;
+app.get('/login', (req, res) => {
+  res.render('pages/login')
+})
 
-(async function(){
-  await client.connect()
+app.post('/order', (req, res) => {
+  var pizza = req.body.pizza
+  io.sockets.emit('rasp', JSON.stringify(pizza))
+  res.json(pizza)
+})
 
-  const res = await client.query('SELECT $1::text as message', ['Hello world!'])
-  console.log(res.rows[0].message) // Hello world!
-  await client.end()
+app.use('/auth', authRoutes)
+app.use('/users', usersRouter)
 
-})();
-
-express()
-  .use(express.static(path.join(__dirname, 'public')))
-  .set('views', path.join(__dirname, 'views'))
-  .set('view engine', 'ejs')
-  .get('/', (req, res) => res.render('pages/index', {ingredients: ingredients, pizzas: pizzas}))
-  .get('/login', (req, res) => res.render('pages/login'))
-  .use('/auth', authRoutes)
-  .use('/users', usersRouter)
-  .use('/make_pizza', makePizza)
-  .listen(PORT, () => console.log(`Listening on ${ PORT }`))
+var server = http.listen(PORT, () => console.log(`Such pizza on ${ PORT }`))
 
 
 // Subistituir por ingredientes do banco
@@ -104,3 +109,5 @@ const pizzas = [
     ingredients: ingredients.filter(i => [0, 1, 2, 6, 14, 10].includes(i.id))
   },
 ]
+
+module.exports = server
