@@ -1,0 +1,35 @@
+<% include ../partials/header.ejs %>
+
+<!-- menu -->
+<section id="menu-list" class="section-padding">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center marb-35">
+        <h1 class="header-h">Menu</h1>
+        <p class="header-p">Escolha uma das pizzas da casa.</p>
+      </div><!--col-md-12 text-center marb-35" -->
+
+      <!-- <%= pizzas[0].name %> -->
+      <% pizzas.forEach( pizza => { %>
+      <div id="menu-wrapper">
+
+        <div class="breakfast menu-restaurant">
+          <span class="clearfix">
+            <a class="menu-title" href="#" data-meal-img="assets/img/restaurant/rib.jpg"><%= pizza.name %></a>
+            <span style="left: 216px; right: 44px;" class="menu-line"></span>
+            <span class="menu-price">R$ <%= pizza.ingredients.reduce((total, atual) => total + atual.price, 0)%></span>
+          </span>
+
+          <% pizza.ingredients.forEach( ingredient => { %>
+          <span class="menu-subtitle"><%= ingredient.name %> , </span>
+          <% }); %>
+        </div><!--breakfast -->
+
+      </div> <!--menu-wrapper -->
+      <% }); %>
+    </div><!--row -->
+
+  </div> <!--container -->
+
+</section>
+<!--/ menu -->
