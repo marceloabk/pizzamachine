@@ -478,3 +478,16 @@ table {
     .sidenav {padding-top: 15px;}
     .sidenav a {font-size: 18px;}
 }
+
+.ingredient-name {
+    color: #FFB03B;
+    font-size: 35px;
+    font-family: 'Satisfy', sans-serif;
+    font-weight: 300;
+}
+
+.ingredient-price {
+    color: #B1B1B1;
+    font-family: Satisfy,'Open Sans',arial;
+    font-size: 15px;
+}

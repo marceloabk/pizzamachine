@@ -12,7 +12,7 @@ services:
   db:
     image: postgres
     restart: always
-    volumes:
-      - ./data:/var/lib/postgresql/data
+    # volumes:
+    #   - ./data:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=pizza

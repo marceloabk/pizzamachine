@@ -3,7 +3,8 @@ const path = require('path')
 const authRoutes = require('./routes/auth-routes')
 const passportSetup = require('./config/passport-setup')
 const { Client } = require('pg')
-const usersRouter = require("./routes/users");
+const usersRouter = require("./routes/users")
+const makePizza = require('./routes/make_pizza')
 
 const client = new Client({
   user: 'postgres',
@@ -30,4 +31,5 @@ express()
   .get('/login', (req, res) => res.render('pages/login'))
   .use('/auth', authRoutes)
   .use('/users', usersRouter)
+  .use('/make_pizza', makePizza)
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
