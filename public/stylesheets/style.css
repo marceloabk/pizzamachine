@@ -491,3 +491,13 @@ table {
     font-family: Satisfy,'Open Sans',arial;
     font-size: 15px;
 }
+
+.menu-button {
+    float: left;
+    font-family: Montserrat,arial;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-right: 4px;
+    /* background-color: rgba(0, 0, 0, 0.4) */
+    /* color: #FFB03B; */
+}

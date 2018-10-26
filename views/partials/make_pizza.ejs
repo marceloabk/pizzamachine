@@ -1,33 +1,35 @@
 <% include ../partials/header.ejs %>
 <section id="contact" class="section-padding">
   <div class="container">
-      <div class="row">
-          <div class="col-md-12 text-center">
-              <h1 class="header-h">Vamos fazer uma Pizza</h1>
-              <p class="header-p">Escolha os ingredientes e monte a pizza ao seu gosto.</p>
-          </div>
-      </div>
-      <!-- <div class="row"> -->
-              <!-- <div class="col-md-12 text-center"> -->
-              <div class="text-center">
-                <ul>
-                  <% ingredients.forEach( (ingrediente) => { %>
-                      <li>
-                        <div class="row justify-content-center">
-                          <button class="col-sm-1 col-sm-offset-3 btn btn-danger minus">-</button>
-                          <div class="col-sm-4">
-                              <span class="ingredient-name"><%= ingrediente.name %> </span>
-                              <span class="ingredient-price">R$ <%= ingrediente.price %></span>
-                              <span class="ingredient-price">... x <%= ingrediente.qtde %></span>
-                            </div>
-                          <button class="col-sm-1 btn btn-info plus">+</button>
-                        </div>
-                      </li>
-                  <% }); %>
-              </ul>
 
-              <button class="contacts-btn">Pronto!!!</button>
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h1 class="header-h">Vamos fazer uma Pizza</h1>
+        <p class="header-p">Escolha os ingredientes e monte a pizza ao seu gosto.</p>
+      </div>
+      <!-- </div> -->
+      <!-- <div class="row"> -->
+      <!-- <div class="col-md-12 text-center"> -->
+      <div class="text-center">
+        <ul>
+          <% ingredients.forEach( (ingrediente) => { %>
+          <li>
+            <div class="row justify-content-center">
+              <button class="col-sm-1 col-sm-offset-3 btn btn-danger minus">-</button>
+              <div class="col-sm-4">
+                <span class="ingredient-name"><%= ingrediente.name %> </span>
+                <span class="ingredient-price">R$ <%= ingrediente.price.toFixed(2) %></span>
+                <span class="ingredient-price">... x <%= ingrediente.qtde %></span>
               </div>
-          <!-- </div> -->
-  </div>
+              <button class="col-sm-1 btn btn-info plus">+</button>
+            </div> <!-- class= row -->
+          </li>
+          <% }); %>
+        </ul>
+
+        <button class="contacts-btn">Adicionar ao pedido!</button>
+      </div> <!-- class=text-center -->
+    </div> <!-- class=row -->
+    
+  </div> <!-- container -->
 </section>
