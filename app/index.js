@@ -21,7 +21,7 @@ app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 
 app.get('/', (req, res) => {
-  res.render('pages/index', {ingredients: ingredients, pizzas: pizzas})
+  res.render('pages/index', {ingredients: ingredients, pizzas: pizzas, order: order })
 })
 
 app.get('/login', (req, res) => {
@@ -109,5 +109,7 @@ const pizzas = [
     ingredients: ingredients.filter(i => [0, 1, 2, 6, 14, 10].includes(i.id))
   },
 ]
+
+let order = ['order test']
 
 module.exports = server

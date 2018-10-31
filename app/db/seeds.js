@@ -171,3 +171,7 @@ function insertIngredientPizza() {
 }
 
 console.log('Execução encerrada')
+// process.exit(-1)
+// setTimeout( () => {
+//   process.abort()
+// }, 6000);

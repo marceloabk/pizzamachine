@@ -4,14 +4,13 @@
   "description": "Pizza machine",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app/index.js",
-    "test": "jasmine",
     "coverage": "istanbul cover --include-all-sources jasmine",
-    "migrate": "knex migrate:latest",
     "complexity": "plato -r -d report -x .min.js -e .eslintrc app",
     "duplicity": "twly",
-    "migrate": "knex migrate:latest",
-    "seeds": "node db/seeds.js"
+    "migrate": "knex --knexfile app/knexfile.js  migrate:latest",
+    "seeds": "node app/db/seeds.js",
+    "start": "nodemon app/index.js",
+    "test": "jasmine"
   },
   "dependencies": {
     "dotenv": "^6.1.0",
