@@ -41,7 +41,9 @@
         $.ajax({
           type: 'POST',
           url: '/order',
-          data: pizza
+          data: {
+            "pizza": pizza,
+          }
         })
       })
       
