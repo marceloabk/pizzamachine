@@ -38,13 +38,18 @@
         let pizza = $(e.target).data('pizza')
         console.log(pizza);
         
+        let a = {
+          pizza: pizza
+        }
+        
         $.ajax({
-          type: 'POST',
-          url: '/order',
-          data: {
-            "pizza": pizza,
-          }
-        })
+            type: 'POST',
+            url: '/order/',
+            data: JSON.stringify(a), // or JSON.stringify ({name: 'jonas'}),
+            success: function(data) { alert('data: ' + data); },
+            contentType: "application/json",
+            dataType: 'json'
+        });
       })
       
     </script>
