@@ -9,7 +9,9 @@
     "coverage": "istanbul cover --include-all-sources jasmine",
     "migrate": "knex migrate:latest",
     "complexity": "plato -r -d report -x .min.js -e .eslintrc app",
-    "duplicity": "twly"
+    "duplicity": "twly",
+    "migrate": "knex migrate:latest",
+    "seeds": "node db/seeds.js"
   },
   "dependencies": {
     "dotenv": "^6.1.0",

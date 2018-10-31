@@ -4,7 +4,7 @@ exports.up = function(knex, Promise) {
   .createTable('INGREDIENT', (table) => {
     table.increments('id').primary();
     table.text('name');
-    table.integer('price');
+    table.float('price');
   })
   .createTable('PIZZA', (table) => {
     table.increments('id').primary();
@@ -20,6 +20,7 @@ exports.up = function(knex, Promise) {
   })
   .createTable('ORDER', (table) => {
     table.increments('id').primary();
+    table.float('price');
     table.integer('user_id');
     table.foreign('user_id').references('USER.id');
   })
