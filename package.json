@@ -4,9 +4,12 @@
   "description": "Pizza machine",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "nodemon app/index.js",
     "test": "jasmine",
-    "migrate": "knex migrate:latest"
+    "coverage": "istanbul cover --include-all-sources jasmine",
+    "migrate": "knex migrate:latest",
+    "complexity": "plato -r -d report -x .min.js -e .eslintrc app",
+    "duplicity": "twly"
   },
   "dependencies": {
     "dotenv": "^6.1.0",
@@ -21,8 +24,16 @@
     "socket.io": "^2.1.1"
   },
   "devDependencies": {
+    "eslint": "^5.3.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-react": "^7.11.0",
+    "istanbul": "^0.4.5",
     "jasmine": "^3.2.0",
-    "request": "^2.81.0"
+    "plato": "^1.7.0",
+    "request": "^2.81.0",
+    "twly": "^4.0.4"
   },
   "repository": {
     "type": "git",
