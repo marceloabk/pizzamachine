@@ -26,7 +26,7 @@ passport.use(
     //  user.userCreation('client', )
     // console.log(`User: ${JSON.stringify(profile)}.`);
     console.log('passport google callback function fired')
-  }),
+  })
 )
 
 passport.use(
@@ -41,5 +41,5 @@ passport.use(
     console.log(`User: ${JSON.stringify(profile)}.`)
     console.log('passport facebook callback function fired')
     done()
-  }),
+  })
 )
