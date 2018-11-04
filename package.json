@@ -10,9 +10,11 @@
     "migrate": "knex --knexfile app/knexfile.js  migrate:latest",
     "seeds": "node app/db/seeds.js",
     "start": "nodemon app/index.js",
-    "test": "jasmine"
+    "test": "jasmine",
+    "wt": "eslint --fix app/"
   },
   "dependencies": {
+    "ajv": "^6.5.4",
     "dotenv": "^6.1.0",
     "ejs": "^2.5.6",
     "express": "^4.15.2",

@@ -7,7 +7,7 @@ module.exports = {
     connection: {
       user: 'postgres',
       host: 'db',
-      database: 'pizza'
-    }
+      database: 'pizza',
+    },
   },
-};
+}

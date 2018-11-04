@@ -1,11 +1,17 @@
 {
-    "extends": "airbnb",
+    "extends": "eslint:recommended",
     "parserOptions": {
         "ecmaVersion": 2017
     },
-
+    "rules": {
+        "semi": ["error", "never"],
+        "no-console": "off"
+    },
     "env": {
-        "es6": true
+        "es6": true,
+        "browser": true,
+        "node": true,
+        "jquery": true
     }
     //"esversion": 6
 }
