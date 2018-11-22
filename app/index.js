@@ -30,12 +30,28 @@ app.get('/login', (req, res) => {
 app.post('/order', (req, res) => {
   const pizza = req.body.pizza
 
-  io.sockets.emit('rasp', JSON.stringify(pizza))
+//  io.sockets.emit('rasp', JSON.stringify(pizza), function(msg) {
+//    console.log(msg)
+//   })
+
+  gSocket.emit('rasp', JSON.stringify(pizza), function(msg) {
+    console.log(msg)
+  })
+
   res.json(pizza)
 })
 
 app.use('/auth', authRoutes)
 app.use('/users', usersRouter)
+
+var gSocket
+io.on('connection', function(socket){
+  console.log('a user connected')
+  gSocket = socket
+  socket.on('disconnect', function(){
+    console.log('user disconnected')
+  })
+})
 
 const server = http.listen(PORT, () => console.log(`Such pizza on ${PORT}`))
 
