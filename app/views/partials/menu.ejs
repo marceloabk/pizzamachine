@@ -24,7 +24,7 @@
           </span>
 
           <% pizza.ingredients.forEach( ingredient => { %>
-          <span class="menu-subtitle"><%= ingredient.name %> , </span>
+            <span class="menu-subtitle"><%= ingredient.name %> , </span>
           <% }); %>
         </div><!--breakfast -->
 
@@ -46,7 +46,7 @@
             type: 'POST',
             url: '/order/',
             data: JSON.stringify(a), // or JSON.stringify ({name: 'jonas'}),
-            success: function(data) { alert('data: ' + data); },
+            success: function(data) { window.location.href = '/orders' },
             contentType: "application/json",
             dataType: 'json'
         });

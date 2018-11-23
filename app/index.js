@@ -20,35 +20,63 @@ app.use(express.json())
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 
-app.get('/', (req, res) => {
-  res.render('pages/index', { ingredients, pizzas, order })
+app.get('/', async(req, res) => {
+  try {
+    let pizzas = await knex.select().table('PIZZA').orderBy('id')
+    let pizza_ingredient = await knex.select().table('PIZZA_INGREDIENT').orderBy('id')
+
+    for (let i = 0; i < pizzas.length; i++) {
+      pizzas[i].ingredients = []
+    }
+
+    for (let i = 0; i < pizzas.length; i++) {
+      for (let j = 0; j < pizza_ingredient.length; j++) {
+        if (pizzas[i].id == pizza_ingredient[j].pizza_id) {
+          let ingredient = await knex.select().table('INGREDIENT').where('id', pizza_ingredient[j].ingredient_id).first()
+          pizzas[i].ingredients.push(ingredient)
+        }
+      }
+    }
+
+    res.render('pages/index', { pizzas, order })
+  } 
+  catch(err) {
+    console.log(err); throw err
+  }
 })
 
 app.get('/login', (req, res) => {
   res.render('pages/login')
 })
 
-app.get('/orders', (req, res) => {
-  let list = []
-  knex.select('ORDER.id', 'name', 'price', 'is_ready').from('ORDER').leftOuterJoin('USER', 'ORDER.user_id' ,'USER.id').orderBy('date_time')
-  .then((rows) => {
-    list = rows
-    res.render('pages/orders', { orders: list })
-  })
-  .catch((err) => { console.log(err); throw err })
+app.get('/orders', async (req, res) => {
+  try {
+    let orders = await knex.select('ORDER.id', 'name', 'price', 'is_ready').from('ORDER')
+      .leftOuterJoin('USER', 'ORDER.user_id' ,'USER.id').orderBy('date_time')
+
+    res.render('pages/orders', { orders })
+  }
+  catch(err) { 
+    console.log(err); throw err 
+  }
 })
 
 
-app.post('/order', (req, res) => {
+app.post('/order', async (req, res) => {
   const pizza = req.body.pizza
 
-//  io.sockets.emit('rasp', JSON.stringify(pizza), function(msg) {
-//    console.log(msg)
-//   })
-
-  gSocket.emit('rasp', JSON.stringify(pizza), function(msg) {
-    console.log(msg)
-  })
+  try {
+    await knex('ORDER').insert({
+      price: pizza.ingredients.reduce((total, atual) => total + atual.price, 0).toFixed(2),
+      user_id: 1,
+      pizza_id: pizza.id,
+      is_ready: false,
+      date_time: new Date(),
+    })
+  }
+  catch(err) { 
+    console.log(err); throw err 
+  }
 
   res.json(pizza)
 })
@@ -67,50 +95,6 @@ io.on('connection', function(socket){
 })
 
 const server = http.listen(PORT, () => console.log(`Such pizza on ${PORT}`))
-
-
-// Subistituir por ingredientes do banco
-const ingredients = [
-  { id: 1, name: 'Massa', price: 1.00 },
-  { id: 2, name: 'Molho', price: 0.25 },
-  { id: 3, name: 'Mussarela', price: 0.50 },
-  { id: 4, name: 'Presunto', price: 0.50 },
-  { id: 5, name: 'Orégano', price: 0.25 }  
-]
-
-const pizzas = [
-  { 
-    id: 0,
-    name: 'Mussarela',
-    ingredients: ingredients.filter(i => [1, 2, 3].includes(i.id)) 
-  },
-  { 
-    id: 1,
-    name: 'Presunto',
-    ingredients: ingredients.filter(i => [1, 2, 4].includes(i.id))
-  },
-  { 
-    id: 2,
-    name: 'Mussarela com orégano',
-    ingredients: ingredients.filter(i => [1, 2, 3, 5].includes(i.id))  
-  },
-  { 
-    id: 3,
-    name: 'Presunto com orégano',
-    ingredients: ingredients.filter(i => [1, 2, 4, 5].includes(i.id)) 
-  },
-  { 
-    id: 4,
-    name: 'Mussarela e presunto',
-    ingredients: ingredients.filter(i => [1, 2, 3, 4].includes(i.id)) 
-  },
-  { 
-    id: 5,
-    name: 'Mussarela e presunto com orégano',
-    ingredients: ingredients.filter(i => [1, 2, 3, 4, 5].includes(i.id)) 
-  }
-]
-
 
 let order = ['order test']
 
