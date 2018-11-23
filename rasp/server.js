@@ -43,10 +43,11 @@ socket.on('updatedDb', function() {
 //     }, 10000)
 // }
 
-// function sendPizzaToMSP(pizzaNumber){
-//     txbuf = new Buffer(pizzaNumber).toString('hex')
-//     spi.write(txbuf, function(device, buf) {
-//         console.log('ESCREVEU')
-//         console.log(buf.toString('hex'))
-//     })    
-// }
+function sendPizzaToMSP(pizzaNumber){
+    pizzaNumber = `0x0` + pizzaNumber
+    txbuf = new Buffer(pizzaNumber)
+    spi.write(txbuf, function(device, buf) {
+        console.log('ESCREVEU')
+        console.log(buf.toString('hex'))
+    })    
+}
