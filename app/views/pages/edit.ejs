@@ -1,27 +1,41 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <% include ../partials/header.ejs %>
-</head>
-<link rel="stylesheet" type="text/css" href="/stylesheets/sign_in.css" />
-<body>
-  <div class="container">
-    <form id="contact" action="" method="post">
-      <h3>Edição do usuário <%= user.name %></h3>
-      <h4>Realize as alterações desejadas e depois clique em "Enviar"</h4>
-      <fieldset>
-        <input value="<%= user.name %>" type="text" tabindex="1" name='user[name]' required autofocus>
-      </fieldset>
-      <fieldset>
-        <input value="<%= user.email %>" type="email" tabindex="2" name='user[email]' required>
-      </fieldset>
-      <fieldset>
-        <input value="<%= user.phone %>" type="text" tabindex="2" name='user[phone]'>
-      </fieldset>
-      <fieldset>
-        <button name="submit" type="submit" id="contact-submit" data-submit="...Enviando">Enviar</button>
-      </fieldset>
-    </form>
-  </div>
-</body>
+  <head>
+    <meta charset="utf-8">
+    <title>Cadastro</title>
+    <% include ../partials/header.ejs %>
+  </head>
+  <body>
+      <section id="contact" class="section-padding">
+        <% include ../partials/nav.ejs %>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h1 class="header-h">Edição do usuário <%= user.name %></h1>
+                    <p class="header-p">Realize as alterações desejadas e depois clique em "Enviar"</p>
+                </div>
+            </div>
+            <div class="text-center">
+              <div class="container"  style='max-width:700px'>
+                <form id="contact" action="" method="post">
+                    <fieldset>
+                        <input value="<%= user.name %>" class="form-control"  type="text" tabindex="1" name='user[name]' required autofocus>
+                      </fieldset>
+                      <fieldset>
+                        <input value="<%= user.email %>" class="form-control" type="email" tabindex="2" name='user[email]' required>
+                      </fieldset>
+                      <fieldset>
+                        <input value="<%= user.phone %>" class="form-control" type="text" tabindex="2" name='user[phone]'>
+                      </fieldset>
+                      <fieldset>
+                          <button class="contacts-btn" name="submit" type="submit" id="contact-submit" data-submit="...Enviando">Enviar</button>
+                      </fieldset>
+                </form>
+              </div>
+            </div>
+        </div>
+    </section>
+
+    <% include ../partials/footer.ejs %>
+  </body>
 </html>

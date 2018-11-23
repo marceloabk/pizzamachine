@@ -9,40 +9,53 @@
       <section id="contact" class="section-padding">
         <% include ../partials/nav.ejs %>
         <div class="container">
-            <div class="row">
-                <div class="col-md-12 text-center">
+            <div class="row text-center">
+                <div class="col-md-12 ">
                     <h1 class="header-h">Pedidos</h1>
                     <p class="header-p">Lista de pedidos</p>
                 </div>
+                
+                <table cellspacing="0" align="center">
+                    <tr>
+                    <th>Nº do pedido</th>
+                    <th>Cliente</th>
+                    <th>Valor</th>
+                    <th>Status</th>
+                    </tr>
+    
+                    <% orders.forEach(function(order){ %>
+                    <tr>
+                        <td><%= order.id %></td>
+                        <td><%= order.name %></td>
+                        <td><%= order.price %></td>
+                        <td><%= order.is_ready ? "Pronta " : "Em preparo"  %></td>
+                    </tr>
+                    <% })%>
+                </table>
+                
             </div>
 
-            <table cellspacing="0">
-                <tr>
-                   <th>Nº do pedido</th>
-                   <th>Cliente</th>
-                   <th>Valor</th>
-                   <th>Status</th>
-                </tr>
-  
-                <% orders.forEach(function(order){ %>
-                  <tr>
-                      <td><%= order.id %></td>
-                      <td><%= order.name %></td>
-                      <td><%= order.price %></td>
-                      <td><%= order.is_ready ? "Pronta " : "Em preparo"  %></td>
-                  </tr>
-                <% })%>
-            </table>
-        </div>
+        
     </section>
 
     <% include ../partials/footer.ejs %>
+
+
+    <style>
+        table, th, td {
+            border: 1px solid grey;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 5px;
+            text-align: left;
+        }
+    </style>
 
     <script>
 
         setInterval(function(){
             location.reload();
-
         }, 3000);
 
     </script>
