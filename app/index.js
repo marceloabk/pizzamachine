@@ -4,7 +4,7 @@ const path = require('path')
 // const makePizza = require('./routes/make_pizza')
 
 const express = require('express')
-
+const knex = require('./db/connection')
 const app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
@@ -25,6 +25,16 @@ app.get('/', (req, res) => {
 
 app.get('/login', (req, res) => {
   res.render('pages/login')
+})
+
+app.get('/orders', (req, res) => {
+  let list = []
+  knex.select('*').from('ORDER').leftOuterJoin('USER', 'ORDER.user_id' ,'USER.id') //.orderBy('name')
+  .then((rows) => {
+    list = rows
+    res.render('pages/orders', { orders: list })
+  })
+  .catch((err) => { console.log(err); throw err })
 })
 
 app.post('/order', (req, res) => {

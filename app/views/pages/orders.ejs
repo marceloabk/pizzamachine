@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Fila</title>
+    <% include ../partials/header.ejs %>
+  </head>
+  <body>
+      <section id="contact" class="section-padding">
+        <% include ../partials/nav.ejs %>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h1 class="header-h">Pedidos</h1>
+                    <p class="header-p">Lista de pedidos</p>
+                </div>
+            </div>
+
+            <table cellspacing="0">
+                <tr>
+                   <th>Nº do pedido</th>
+                   <th>Cliente</th>
+                   <th>Valor</th>
+                   <th>Status</th>
+                </tr>
+  
+                <% orders.forEach(function(order){ %>
+                  <tr>
+                      <td><%= order.id %></td>
+                      <td><%= order.name %></td>
+                      <td><%= order.price %></td>
+                      <td><%= order.is_ready ? "Pronta " : "Em preparo"  %></td>
+                  </tr>
+                <% })%>
+            </table>
+        </div>
+    </section>
+
+    <% include ../partials/footer.ejs %>
+
+    <script>
+
+        setInterval(function(){
+            location.reload();
+
+        }, 3000);
+
+    </script>
+
+    </body> 
+</html>
