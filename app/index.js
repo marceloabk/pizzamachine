@@ -61,7 +61,6 @@ app.get('/orders', async (req, res) => {
   }
 })
 
-
 app.post('/order', async (req, res) => {
   const pizza = req.body.pizza
 
@@ -86,11 +85,18 @@ app.use('/users', usersRouter)
 app.use('/orders', ordersRoutes)
 
 var gSocket
+var pi = 0 
 io.on('connection', function(socket){
   console.log('a user connected')
   gSocket = socket
   socket.on('disconnect', function(){
     console.log('user disconnected')
+  })
+  socket.on('askOrder', function(){
+    console.log('Quero uma pizza')
+    socket.emit('getOrder',  {"id": ++pi}, function(msg) {
+      console.log(msg)
+    })
   })
 })
 
