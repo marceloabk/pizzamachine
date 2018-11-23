@@ -22,6 +22,7 @@ exports.up = function (knex) {
       table.increments('id').primary()
       table.float('price')
       table.integer('user_id')
+      table.boolean('is_ready')
       table.foreign('user_id').references('USER.id')
     })
     .createTable('ORDER_PIZZA', (table) => {

@@ -29,39 +29,22 @@ knex('USER').max('id').first()
   .catch((err) => { console.log(err); throw err })
 
 const ingredients = [
-  { name: 'Massa', price: 1.00 },
-  { name: 'Molho', price: 0.25 },
-  { name: 'Mussarela', price: 0.50 },
-  { name: 'Calabresa', price: 0.50 },
-  { name: 'Presunto', price: 0.50 },
-  { name: 'Frango', price: 0.50 },
-  { name: 'Tomate', price: 0.25 },
-  { name: 'Pimentão', price: 0.25 },
-  { name: 'Catupiry', price: 0.25 },
-  { name: 'Milho', price: 0.25 },
-  { name: 'Oregano', price: 0.25 },
-  { name: 'Bakon', price: 0.50 },
-  { name: 'Provolone', price: 0.50 },
-  { name: 'Parmesão', price: 0.50 },
-  { name: 'Manjericão', price: 0.25 },
-  { name: 'Ovo', price: 0.50 },
-  { name: 'Palmito', price: 0.25 },
-  { name: 'Azeitona', price: 0.25 },
-  { name: 'Cebola', price: 0.25 },
-  { name: 'Peperoni', price: 0.50 },
-  { name: 'Atum', price: 0.50 },
-  { name: 'Bacalheu', price: 0.50 },
-  { name: 'Carne de sol', price: 0.50 },
+  { id: 1, name: 'Massa', price: 1.00 },
+  { id: 2, name: 'Molho', price: 0.25 },
+  { id: 3, name: 'Mussarela', price: 0.50 },
+  { id: 4, name: 'Presunto', price: 0.50 },
+  { id: 5, name: 'Orégano', price: 0.25 }  
 ]
 
 console.log('Inserindo ingredientes...')
 
-ingredients.forEach((i) => {
+ingredients.forEach( i => {
   knex('INGREDIENT').select()
     .where('name', i.name)
     .then((rows) => {
       if (rows.length === 0) {
         knex('INGREDIENT').insert({
+          id: i.id,
           name: i.name,
           price: i.price,
         }).catch((err) => { console.log(err); throw err })
@@ -75,14 +58,12 @@ ingredients.forEach((i) => {
 console.log('Ingredientes inseridos.')
 
 const pizzas = [
-  { name: 'Frango com catupiry' },
-  { name: 'Calabresa' },
-  { name: '4 Queijos' },
-  { name: 'Portuguesa' },
-  { name: 'Bakon' },
-  { name: 'Atum' },
-  { name: 'Palmito' },
-  { name: 'Marguerita' },
+  { id: 1, name: 'Mussarela' },
+  { id: 2, name: 'Presunto' },
+  { id: 3, name: 'Mussarela com orégano' },
+  { id: 4, name: 'Presunto com orégano' },
+  { id: 5, name: 'Mussarela e presunto' },
+  { id: 6, name: 'Mussarela e presunto com orégano' }
 ]
 
 pizzas.forEach((i) => {
@@ -101,63 +82,35 @@ pizzas.forEach((i) => {
 })
 
 const pizza_ingredient = [
-  // Frango com catupiry
-  { pizza_id: 1, ingredient_id: 1 },
-  { pizza_id: 1, ingredient_id: 2 },
-  { pizza_id: 1, ingredient_id: 3 },
-  { pizza_id: 1, ingredient_id: 6 },
-  // Calabresa
-  { pizza_id: 2, ingredient_id: 1 },
-  { pizza_id: 2, ingredient_id: 2 },
-  { pizza_id: 2, ingredient_id: 4 },
-  { pizza_id: 2, ingredient_id: 11 },
-  // 4 Queijos
-  { pizza_id: 3, ingredient_id: 1 },
-  { pizza_id: 3, ingredient_id: 2 },
-  { pizza_id: 3, ingredient_id: 3 },
-  { pizza_id: 3, ingredient_id: 9 },
-  { pizza_id: 3, ingredient_id: 13 },
-  { pizza_id: 3, ingredient_id: 14 },
-  // Portuguesa
-  { pizza_id: 4, ingredient_id: 1 },
-  { pizza_id: 4, ingredient_id: 2 },
-  { pizza_id: 4, ingredient_id: 3 },
-  { pizza_id: 4, ingredient_id: 12 },
-  { pizza_id: 4, ingredient_id: 7 },
-  { pizza_id: 4, ingredient_id: 16 },
-  { pizza_id: 4, ingredient_id: 19 },
-  { pizza_id: 4, ingredient_id: 4 },
-  { pizza_id: 4, ingredient_id: 18 },
-  { pizza_id: 4, ingredient_id: 8 },
-  { pizza_id: 4, ingredient_id: 11 },
-  // Bakon
-  { pizza_id: 5, ingredient_id: 1 },
-  { pizza_id: 5, ingredient_id: 2 },
-  { pizza_id: 5, ingredient_id: 3 },
-  { pizza_id: 5, ingredient_id: 12 },
-  { pizza_id: 5, ingredient_id: 7 },
-  { pizza_id: 5, ingredient_id: 11 },
-  // Atum
-  { pizza_id: 6, ingredient_id: 1 },
-  { pizza_id: 6, ingredient_id: 2 },
-  { pizza_id: 6, ingredient_id: 3 },
-  { pizza_id: 6, ingredient_id: 19 },
-  { pizza_id: 6, ingredient_id: 21 },
-  { pizza_id: 6, ingredient_id: 18 },
-  { pizza_id: 6, ingredient_id: 11 },
-  // Palmito
-  { pizza_id: 7, ingredient_id: 1 },
-  { pizza_id: 7, ingredient_id: 2 },
-  { pizza_id: 7, ingredient_id: 3 },
-  { pizza_id: 7, ingredient_id: 17 },
-  { pizza_id: 7, ingredient_id: 11 },
-  // Marguerita
-  { pizza_id: 8, ingredient_id: 1 },
-  { pizza_id: 8, ingredient_id: 2 },
-  { pizza_id: 8, ingredient_id: 3 },
-  { pizza_id: 8, ingredient_id: 7 },
-  { pizza_id: 8, ingredient_id: 15 },
-  { pizza_id: 8, ingredient_id: 11 },
+  // Mussarela
+  { id: 1, pizza_id: 1, ingredient_id: 1 },
+  { id: 2, pizza_id: 1, ingredient_id: 2 },
+  { id: 3, pizza_id: 1, ingredient_id: 3 },
+  // Presunto
+  { id: 4, pizza_id: 2, ingredient_id: 1 },
+  { id: 5, pizza_id: 2, ingredient_id: 2 },
+  { id: 6, pizza_id: 2, ingredient_id: 4 },
+  // Mussarela com oregano
+  { id: 7, pizza_id: 3, ingredient_id: 1 },
+  { id: 8, pizza_id: 3, ingredient_id: 2 },
+  { id: 9, pizza_id: 3, ingredient_id: 3 },
+  { id: 10, pizza_id: 3, ingredient_id: 5 },
+  // Presunto com oregano
+  { id: 11, pizza_id: 4, ingredient_id: 1 },
+  { id: 12, pizza_id: 4, ingredient_id: 2 },
+  { id: 13, pizza_id: 4, ingredient_id: 4 },
+  { id: 14, pizza_id: 4, ingredient_id: 5 },
+  // Mussarela e presunto 
+  { id: 15, pizza_id: 5, ingredient_id: 1 },
+  { id: 16, pizza_id: 5, ingredient_id: 2 },
+  { id: 17, pizza_id: 5, ingredient_id: 3 },
+  { id: 18, pizza_id: 5, ingredient_id: 4 },
+  // Mussarela e presunto com oregano
+  { id: 19, pizza_id: 6, ingredient_id: 1 },
+  { id: 20, pizza_id: 6, ingredient_id: 2 },
+  { id: 21, pizza_id: 6, ingredient_id: 3 },
+  { id: 22, pizza_id: 6, ingredient_id: 4 },
+  { id: 23, pizza_id: 6, ingredient_id: 5 },
 ]
 
 setTimeout(insertIngredientPizza, 5000)
@@ -165,6 +118,7 @@ setTimeout(insertIngredientPizza, 5000)
 function insertIngredientPizza() {
   pizza_ingredient.forEach((i) => {
     knex('PIZZA_INGREDIENT').insert({
+      id: i.id,
       pizza_id: i.pizza_id,
       ingredient_id: i.ingredient_id,
       amount: 1,
@@ -173,7 +127,3 @@ function insertIngredientPizza() {
 }
 
 console.log('Execução encerrada')
-// process.exit(-1)
-// setTimeout( () => {
-//   process.abort()
-// }, 6000);
