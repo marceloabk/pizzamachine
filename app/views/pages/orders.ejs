@@ -35,6 +35,7 @@
                 
             </div>
 
+          
         
     </section>
 
@@ -53,10 +54,25 @@
     </style>
 
     <script>
+        
+        var q1 = checkUpdate();
 
         setInterval(function(){
-            location.reload();
+            var q2 = checkUpdate()
+            if (q1 != q2){
+                location.reload();
+            }
         }, 3000);
+
+        function checkUpdate (){
+            var update = $.ajax({
+                url: "/orders/all_orders",
+                type: "GET",
+                async: false,
+            }).responseText;
+
+            return update;
+        }
 
     </script>
 

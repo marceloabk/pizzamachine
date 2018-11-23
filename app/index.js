@@ -10,6 +10,7 @@ const http = require('http').Server(app)
 const io = require('socket.io')(http)
 const usersRouter = require('./routes/users')
 const authRoutes = require('./routes/auth-routes')
+const ordersRoutes = require('./routes/orders')
 require('./config/passport-setup')
 
 const PORT = process.env.PORT || 5000
@@ -37,6 +38,7 @@ app.get('/orders', (req, res) => {
   .catch((err) => { console.log(err); throw err })
 })
 
+
 app.post('/order', (req, res) => {
   const pizza = req.body.pizza
 
@@ -53,6 +55,7 @@ app.post('/order', (req, res) => {
 
 app.use('/auth', authRoutes)
 app.use('/users', usersRouter)
+app.use('/orders', ordersRoutes)
 
 var gSocket
 io.on('connection', function(socket){
