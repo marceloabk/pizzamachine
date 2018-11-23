@@ -29,7 +29,7 @@ app.get('/login', (req, res) => {
 
 app.get('/orders', (req, res) => {
   let list = []
-  knex.select('*').from('ORDER').leftOuterJoin('USER', 'ORDER.user_id' ,'USER.id') //.orderBy('name')
+  knex.select('ORDER.id', 'name', 'price', 'is_ready').from('ORDER').leftOuterJoin('USER', 'ORDER.user_id' ,'USER.id').orderBy('date_time')
   .then((rows) => {
     list = rows
     res.render('pages/orders', { orders: list })
