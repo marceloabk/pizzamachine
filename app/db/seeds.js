@@ -72,6 +72,7 @@ pizzas.forEach((i) => {
     .then((rows) => {
       if (rows.length === 0) {
         knex('PIZZA').insert({
+          id: i.id,
           name: i.name,
         }).catch((err) => { console.log(err); throw err })
       } else {
