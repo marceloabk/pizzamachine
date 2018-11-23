@@ -22,22 +22,25 @@ exports.up = function (knex) {
       table.increments('id').primary()
       table.float('price')
       table.integer('user_id')
-      table.boolean('is_ready')
-      table.foreign('user_id').references('USER.id')
-    })
-    .createTable('ORDER_PIZZA', (table) => {
-      table.increments('id').primary()
-      table.integer('amount')
       table.integer('pizza_id')
-      table.integer('order_id')
+      table.boolean('is_ready')
+      table.dateTime('date_time')
+      table.foreign('user_id').references('USER.id')
       table.foreign('pizza_id').references('PIZZA.id')
-      table.foreign('order_id').references('ORDER.id')
     })
-    .createTable('QUEUE', (table) => {
-      table.increments('id').primary()
-      table.integer('order_id')
-      table.foreign('order_id').references('ORDER.id')
-    })
+    // .createTable('ORDER_PIZZA', (table) => {
+    //   table.increments('id').primary()
+    //   table.integer('amount')
+    //   table.integer('pizza_id')
+    //   table.integer('order_id')
+    //   table.foreign('pizza_id').references('PIZZA.id')
+    //   table.foreign('order_id').references('ORDER.id')
+    // })
+    // .createTable('QUEUE', (table) => {
+    //   table.increments('id').primary()
+    //   table.integer('order_id')
+    //   table.foreign('order_id').references('ORDER.id')
+    // })
 }
 
 exports.down = function (knex) {
@@ -45,10 +48,10 @@ exports.down = function (knex) {
     .dropTableIfExists('USER')
     .dropTableIfExists('SOCIAL_MEDIA')
     .dropTableIfExists('SOCIQUEUEAL_MEDIA')
-    .dropTableIfExists('ORDER_PIZZA')
+    // .dropTableIfExists('ORDER_PIZZA')
     .dropTableIfExists('ORDER')
     .dropTableIfExists('PIZZA_INGREDIENT')
-    .dropTableIfExists('QUEUE')
+    // .dropTableIfExists('QUEUE')
     .dropTableIfExists('PIZZA')
     .dropTableIfExists('INGREDIENT')
 }
