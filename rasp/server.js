@@ -1,10 +1,49 @@
 const io = require('socket.io-client')
+const SPI = require('spi')
 //var socket = io('https://pizza-machine-staging.herokuapp.com')
 var socket = io('http://localhost:5000/')
 
-socket.on('rasp', function(msg, callback){
-    console.log('aaaa: ' + msg)
+
+var spi = new SPI.Spi('/dev/spidev0.0', {
+    'mode': SPI.MODE['MODE_0'],  // always set mode as the first option
+    'chipSelect': SPI.CS['none'] // 'none', 'high' - defaults to low
+  }, function(s){s.open();});
+ 
+var txbuf = new Buffer([0x55])
+var rxbuf = new Buffer([0x00])
+
+socket.emit('askOrder', '')
+
+socket.on('getOrder', function(msg, callback){
+    //msg = JSON.parse(msg)
+    console.log(`Fazer pizza: ${msg.id}`)
     setTimeout(function() {
-        callback('deu bom aqui')
-    },56000)
+        callback('Pizza feita')
+        socket.emit('askOrder', '')
+    },10000)
 })
+
+function isPizzaDone(callback) {
+    setTimeout(function(){
+        spi.read(rxbuf, function(device, buf) {
+            console.log('LEU')
+            let mspResponse = buf.toString('hex')
+            console.log(mspResponse)
+
+            if (mspResponse == 'A') {
+                console.log('Enviar resposta: pizza feita')
+                callback('Pizza feita')
+            } else {
+                isPizzaDone(callback)
+            }
+        })
+    }, 10000)
+}
+
+function sendPizzaToMSP(pizzaNumber){
+    txbuf = new Buffer(pizzaNumber).toString('hex')
+    spi.write(txbuf, function(device, buf) {
+        console.log('ESCREVEU')
+        console.log(buf.toString('hex'))
+    })    
+}
