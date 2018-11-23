@@ -9,8 +9,6 @@ router.use(bodyParser.urlencoded({
 
 router.use(bodyParser.json())
 
-
-
 router.get('/all_orders', (req, res) => {
 
     knex.select('ORDER.id', 'name', 'price', 'is_ready').from('ORDER').leftOuterJoin('USER', 'ORDER.user_id' ,'USER.id').orderBy('date_time')
