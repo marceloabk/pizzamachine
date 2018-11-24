@@ -72,31 +72,42 @@ app.post('/order', async (req, res) => {
       is_ready: false,
       date_time: new Date(),
     })
+
+    io.emit('updatedDb', 'talquei')
+    res.json(pizza)
   }
   catch(err) { 
     console.log(err); throw err 
   }
-
-  res.json(pizza)
 })
 
 app.use('/auth', authRoutes)
 app.use('/users', usersRouter)
 app.use('/orders', ordersRoutes)
 
-var gSocket
-var pi = 0 
+
 io.on('connection', function(socket){
   console.log('a user connected')
-  gSocket = socket
   socket.on('disconnect', function(){
     console.log('user disconnected')
   })
-  socket.on('askOrder', function(){
+  socket.on('askOrder', async function(){
     console.log('Quero uma pizza')
-    socket.emit('getOrder',  {"id": ++pi}, function(msg) {
-      console.log(msg)
-    })
+    
+    let order = await knex.select().from('ORDER').where('is_ready', false).orderBy('date_time').first()
+
+    if (order) {
+      socket.emit('getOrder',  {"order": order}, async function(order_back) {
+        console.log(JSON.stringify(order_back))
+  
+        await knex('ORDER').where('id', '=', order_back.order.id)
+          .update({
+            is_ready: true
+        })
+  
+        socket.emit('updatedDb', 'talquei')
+      })
+    } 
   })
 })
 
