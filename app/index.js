@@ -12,6 +12,9 @@ const usersRouter = require('./routes/users')
 const authRoutes = require('./routes/auth-routes')
 const ordersRoutes = require('./routes/orders')
 require('./config/passport-setup')
+require('dotenv').load()
+const stripe = require("stripe")(process.env.SK_STRIPE);
+
 
 const PORT = process.env.PORT || 5000
 
@@ -19,6 +22,10 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.json())
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
+
+app.use(express.urlencoded({
+  extended: false
+}));
 
 app.get('/', async(req, res) => {
   try {
@@ -62,7 +69,27 @@ app.get('/orders', async (req, res) => {
 })
 
 app.post('/order', async (req, res) => {
-  const pizza = req.body.pizza
+  console.log('Body no create-order ==============')
+  console.log(req.body.dpizza);
+  
+  // const pi = JSON.parse(req.body)
+  // console.log(JSON.parse(req.body.dpizza))
+
+  // Token is created using Checkout or Elements!
+  // Get the payment token ID submitted by the form:
+  const token = req.body.stripeToken; // Using Express
+  const chargeAmount = req.body.chargeAmount
+  const description = req.body.description
+  // JSON.stringify
+
+  const charge = stripe.charges.create({
+    amount: chargeAmount,
+    currency: 'BRL',
+    description: description,
+    source: token,
+  });
+
+  const pizza = JSON.parse(req.body.dpizza)
 
   try {
     await knex('ORDER').insert({
@@ -74,7 +101,7 @@ app.post('/order', async (req, res) => {
     })
 
     io.emit('updatedDb', 'talquei')
-    res.json(pizza)
+    res.redirect('/orders')
   }
   catch(err) { 
     console.log(err); throw err 

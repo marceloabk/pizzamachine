@@ -16,7 +16,6 @@ router.get('/all_orders', (req, res) => {
       res.send(orders)
     })
     .catch((err) => { console.log(err); throw err })
-   
 })
 
 module.exports = router
