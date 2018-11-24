@@ -65,6 +65,8 @@ app.post('/order', async (req, res) => {
   const pizza = req.body.pizza
 
   try {
+    let order = await knex.select().from('ORDER').where('is_ready', false).orderBy('date_time')
+
     await knex('ORDER').insert({
       price: pizza.ingredients.reduce((total, atual) => total + atual.price, 0).toFixed(2),
       user_id: 1,
@@ -73,7 +75,9 @@ app.post('/order', async (req, res) => {
       date_time: new Date(),
     })
 
-    io.emit('updatedDb', 'talquei')
+    if (order.length === 1) {
+      io.emit('updatedDb', '')
+    }
     res.json(pizza)
   }
   catch(err) { 
