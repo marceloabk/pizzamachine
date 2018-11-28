@@ -63,6 +63,15 @@ app.get('/login', (req, res) => {
   res.render('pages/login')
 })
 
+app.get('/logout', (req, res) => {
+  req.session.destroy(function(err) {
+    if(err) {
+      console.log(err);
+    } else {
+      res.redirect('/');
+    }
+  });
+})
 
 app.post('/login', async (req, res) => {
   sess = req.session;
