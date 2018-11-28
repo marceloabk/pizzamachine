@@ -15,7 +15,27 @@
 
         <div class="breakfast menu-restaurant">
           <span class="clearfix">
-            <button class="btn btn-primary plus menu-button plus_button" data-pizza='<%- JSON.stringify(pizza) %>'</button>+</button>
+
+            <!-- <button id="-button" class="btn btn-primary minus menu-button">-</button> -->
+            <!-- <button class="btn btn-primary plus menu-button plus_button" data-pizza='<%- JSON.stringify(pizza) %>'</button>+</button> -->
+
+            <!-- Stripe payment -->
+            <form action="/order" method="POST">
+              <script
+                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="pk_test_tKBrnE42276ve3Au4VkvlfgM"
+                data-amount="<%= 100 * pizza.ingredients.reduce((total, atual) => total + atual.price, 0).toFixed(2)%>"
+                data-name="Seu pedido"
+                data-description="Pizza de <%= pizza.name %>"
+                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                data-locale="auto"
+                data-currency="BRL">
+              </script>
+              <input type="hidden" name="chargeAmount" value="<%= 100 * pizza.ingredients.reduce((total, atual) => total + atual.price, 0).toFixed(2)%>">
+              <input type="hidden" name="description" value="Pizza de <%= pizza.name %>">
+              <input type="hidden" name="dpizza" value='<%= JSON.stringify(pizza) %>'>
+            </form>
+
             <h4 class="menu-title" data-meal-img="assets/img/restaurant/rib.jpg"><%= pizza.name %></h4>
             <span style="left: 216px; right: 44px;" class="menu-line"></span>
             <span class="menu-price">R$ <%= pizza.ingredients.reduce((total, atual) => total + atual.price, 0).toFixed(2)%></span>
