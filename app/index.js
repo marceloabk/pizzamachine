@@ -2,7 +2,7 @@ const path = require('path')
 
 // const usersRouter = require("./routes/users")
 // const makePizza = require('./routes/make_pizza')
-
+const session = require('express-session');
 const express = require('express')
 const knex = require('./db/connection')
 const app = express()
@@ -14,6 +14,7 @@ const ordersRoutes = require('./routes/orders')
 require('./config/passport-setup')
 require('dotenv').load()
 const stripe = require("stripe")(process.env.SK_STRIPE);
+const crypto = require('crypto')
 
 
 const PORT = process.env.PORT || 5000
@@ -27,7 +28,10 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+var sess;
+
 app.get('/', async(req, res) => {
+
   try {
     let pizzas = await knex.select().table('PIZZA').orderBy('id')
     let pizza_ingredient = await knex.select().table('PIZZA_INGREDIENT').orderBy('id')
@@ -52,8 +56,52 @@ app.get('/', async(req, res) => {
   }
 })
 
+app.use(session({secret: 'ssshhhhh', cookie: { maxAge: 600000 }}));
+// this is secret is just for cookie reasons
+
 app.get('/login', (req, res) => {
   res.render('pages/login')
+})
+
+app.get('/logout', (req, res) => {
+  req.session.destroy(function(err) {
+    if(err) {
+      console.log(err);
+    } else {
+      res.redirect('/');
+    }
+  });
+})
+
+app.post('/login', async (req, res) => {
+  sess = req.session;
+  user_email = req.body.user.email
+  
+  //buscando usuário no banco
+  var user = await knex.select().from('USER').where('email', user_email ).first()
+  
+  if ( typeof user == 'undefined'){
+    console.log('Email não encontrado');
+    res.redirect('/login');
+  }else{
+    // checking password
+    var pw = await knex.select('password').from('USER').where('id', user.id ).first()
+    
+    var ent_pw = crypto.createHmac('sha256', process.env.HASH_SECRET)
+                  .update(req.body.user.password)
+                  .digest('hex')
+    
+    if (pw.password == ent_pw){
+      console.log('Login realizado com sucesso')
+      sess.email=req.body.user.email;
+
+    }else{
+      console.log('Senha Incorreta');
+      res.redirect('/login');
+    }
+  }
+ 
+  res.redirect('/');
 })
 
 app.get('/orders', async (req, res) => {
@@ -69,6 +117,20 @@ app.get('/orders', async (req, res) => {
 })
 
 app.post('/order', async (req, res) => {
+
+  // getting the user id
+  
+  sess = req.session;
+  if (sess.email){
+    console.log('usuário logado')
+  }else{
+    res.redirect('/login');
+  }
+
+  var user = await knex.select().from('USER').where('email', sess.email ).first()
+  var user_id = user.id
+ 
+
   console.log('Body no create-order ==============')
   console.log(req.body.dpizza);
   
@@ -87,14 +149,15 @@ app.post('/order', async (req, res) => {
     currency: 'BRL',
     description: description,
     source: token,
-  });
+  })
+  .catch((err) => { console.log(err); throw err });
 
   const pizza = JSON.parse(req.body.dpizza)
 
   try {
     await knex('ORDER').insert({
       price: pizza.ingredients.reduce((total, atual) => total + atual.price, 0).toFixed(2),
-      user_id: 1,
+      user_id: user_id,
       pizza_id: pizza.id,
       is_ready: false,
       date_time: new Date(),
