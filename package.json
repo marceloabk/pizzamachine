@@ -10,7 +10,7 @@
     "migrate": "knex --knexfile app/knexfile.js  migrate:latest",
     "rollback": "knex --knexfile app/knexfile.js migrate:rollback",
     "seeds": "node app/db/seeds.js > /dev/null 2>&1 &",
-    "start": "nodemon app/index.js",
+    "start": "node app/index.js",
     "test": "jasmine",
     "lint": "eslint --fix app/ spec/"
   },
@@ -21,7 +21,6 @@
     "express": "^4.15.2",
     "express-session": "1.15.6",
     "knex": "^0.15.2",
-    "nodemon": "^1.18.4",
     "passport": "^0.4.0",
     "passport-facebook": "^2.1.1",
     "passport-google-oauth20": "^1.0.0",
