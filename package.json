@@ -10,7 +10,7 @@
     "migrate": "knex --knexfile app/knexfile.js  migrate:latest",
     "rollback": "knex --knexfile app/knexfile.js migrate:rollback",
     "seeds": "node app/db/seeds.js > /dev/null 2>&1 &",
-    "start": "nodemon app/index.js",
+    "start": "node app/index.js",
     "test": "jasmine",
     "lint": "eslint --fix app/ spec/"
   },
@@ -20,12 +20,12 @@
     "ejs": "^2.5.6",
     "express": "^4.15.2",
     "knex": "^0.15.2",
-    "nodemon": "^1.18.4",
     "passport": "^0.4.0",
     "passport-facebook": "^2.1.1",
     "passport-google-oauth20": "^1.0.0",
     "pg": "^7.5.0",
-    "socket.io": "^2.1.1"
+    "socket.io": "^2.1.1",
+    "stripe": "^6.15.1"
   },
   "devDependencies": {
     "eslint": "^5.3.0",
