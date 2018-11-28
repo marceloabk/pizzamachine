@@ -29,11 +29,11 @@ knex('USER').max('id').first()
   .catch((err) => { console.log(err); throw err })
 
 const ingredients = [
-  { id: 1, name: 'Massa', price: 1.00 },
-  { id: 2, name: 'Molho', price: 0.25 },
-  { id: 3, name: 'Mussarela', price: 0.50 },
-  { id: 4, name: 'Presunto', price: 0.50 },
-  { id: 5, name: 'Orégano', price: 0.25 }  
+  { id: 1, name: 'Massa', price: 1.50 },
+  { id: 2, name: 'Molho', price: 0.75 },
+  { id: 3, name: 'Mussarela', price: 1.00 },
+  { id: 4, name: 'Presunto', price: 1.00 },
+  { id: 5, name: 'Orégano', price: 0.75 }  
 ]
 
 console.log('Inserindo ingredientes...')
