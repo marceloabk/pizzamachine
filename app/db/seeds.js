@@ -1,39 +1,11 @@
 const knex = require('./connection')
 
-console.log('Executando seeds para inserção de usuários fake.')
-
-console.log('Inserindo clientes')
-knex('USER').max('id').first()
-  .then((user) => {
-    if (user.max == null) { user.max = 1 }
-    for (let aux = user.max; aux <= user.max + 10; aux++) {
-      knex('USER').insert({
-        role: 'client', name: `Cliente_FAKE_${aux}`, email: `c_fake${aux}@gmail.com`, phone: '332211', password: '123456',
-      })
-        .catch((err) => { console.log(err); throw err })
-    }
-  })
-  .catch((err) => { console.log(err); throw err })
-
-
-knex('USER').max('id').first()
-  .then((user) => {
-    if (user.max == null) { user.max = 1 }
-    for (let aux = user.max; aux <= user.max + 5; aux++) {
-      knex('USER').insert({
-        role: 'employee', name: `Funcionário_FAKE_${aux}`, email: `e_fake${aux}@gmail.com`, phone: '332211', password: '123456',
-      })
-        .catch((err) => { console.log(err); throw err })
-    }
-  })
-  .catch((err) => { console.log(err); throw err })
-
 const ingredients = [
-  { id: 1, name: 'Massa', price: 1.00 },
-  { id: 2, name: 'Molho', price: 0.25 },
-  { id: 3, name: 'Mussarela', price: 0.50 },
-  { id: 4, name: 'Presunto', price: 0.50 },
-  { id: 5, name: 'Orégano', price: 0.25 }  
+  { id: 1, name: 'Massa', price: 1.50 },
+  { id: 2, name: 'Molho', price: 0.75 },
+  { id: 3, name: 'Mussarela', price: 1.00 },
+  { id: 4, name: 'Presunto', price: 1.00 },
+  { id: 5, name: 'Orégano', price: 0.75 }  
 ]
 
 console.log('Inserindo ingredientes...')
