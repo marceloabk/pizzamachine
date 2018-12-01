@@ -204,8 +204,11 @@ io.on('connection', function(socket){
           .update({
             is_ready: true
         })
-  
-        socket.emit('updatedDb', 'talquei')
+  	
+        setTimeout(function (){
+            socket.emit('updatedDb', '')
+        },30000)
+        
       })
     } 
   })

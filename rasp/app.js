@@ -53,7 +53,7 @@ socket.on('updatedDb', function() {
                  isPizzaDone(callback, msg, pizzaNumber)
              }
          })
-}, 10000)
+}, 5000)
  }
 
 function sendPizzaToMSP(pizzaNumber){
