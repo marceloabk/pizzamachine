@@ -18,6 +18,7 @@ const crypto = require('crypto')
 
 
 const PORT = process.env.PORT || 5000
+let isRaspConnected = false
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.json())
@@ -166,7 +167,9 @@ app.post('/order', async (req, res) => {
     let order = await knex.select().from('ORDER').where('is_ready', false).orderBy('date_time')
 
     if (order.length === 1) {
-      io.emit('updatedDb', '')
+        waitRaspConnect(function(){
+	  io.emit('updatedDb', '')
+	})
     }
     // res.json(pizza)
     res.redirect('/orders')
@@ -183,8 +186,10 @@ app.use('/orders', ordersRoutes)
 
 io.on('connection', function(socket){
   console.log('a user connected')
+  isRaspConnected = true
   socket.on('disconnect', function(){
     console.log('user disconnected')
+    isRaspConnected = false
   })
   socket.on('askOrder', async function(){
     console.log('Quero uma pizza')
@@ -209,5 +214,15 @@ io.on('connection', function(socket){
 const server = http.listen(PORT, () => console.log(`Such pizza on ${PORT}`))
 
 let order = ['order test']
+
+function waitRaspConnect(callback) {
+    if (isRaspConnected) {
+        callback()
+    } else {
+        setTimeout(function(){
+	    waitRaspConnect(callback)
+        }, 5000)
+    }
+}
 
 module.exports = server
