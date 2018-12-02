@@ -31,9 +31,9 @@ console.log('Ingredientes inseridos.')
 
 const pizzas = [
   { id: 1, name: 'Mussarela' },
-  { id: 2, name: 'Presunto' },
+  // { id: 2, name: 'Presunto' },
   { id: 3, name: 'Mussarela com orégano' },
-  { id: 4, name: 'Presunto com orégano' },
+  // { id: 4, name: 'Presunto com orégano' },
   { id: 5, name: 'Mussarela e presunto' },
   { id: 6, name: 'Mussarela e presunto com orégano' }
 ]
