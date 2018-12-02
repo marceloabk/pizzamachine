@@ -25,6 +25,13 @@ app.use(express.json())
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 
+app.use(session({
+  secret: 'ssshhhhh',
+  resave: true,
+  saveUninitialized: false
+}));
+// this is secret is just for cookie reasons
+
 app.use(express.urlencoded({
   extended: true
 }));
@@ -32,7 +39,10 @@ app.use(express.urlencoded({
 var sess;
 
 app.get('/', async(req, res) => {
-
+  sess = req.session;
+  console.log(sess)
+  var u_name = req.session.name
+  console.log(u_name)
   try {
     let pizzas = await knex.select().table('PIZZA').orderBy('id')
     let pizza_ingredient = await knex.select().table('PIZZA_INGREDIENT').orderBy('id')
@@ -50,18 +60,17 @@ app.get('/', async(req, res) => {
       }
     }
 
-    res.render('pages/index', { pizzas, order })
+    res.render('pages/index', { pizzas, order, u_name})
   } 
   catch(err) {
     console.log(err); throw err
   }
 })
 
-app.use(session({secret: 'ssshhhhh', cookie: { maxAge: 600000 }}));
-// this is secret is just for cookie reasons
 
 app.get('/login', (req, res) => {
-  res.render('pages/login')
+  var u_name = req.session.name
+  res.render('pages/login', {u_name})
 })
 
 app.get('/logout', (req, res) => {
@@ -94,8 +103,21 @@ app.post('/login', async (req, res) => {
     
     if (pw.password == ent_pw){
       console.log('Login realizado com sucesso')
-      sess.email=req.body.user.email;
 
+      var user_name = await knex.select('name').from('USER').where('email', user_email ).first()
+      var user_id = await knex.select('id').from('USER').where('email', user_email ).first()
+      sess.cookie.id = user_id.id
+      sess.name = user_name.name
+      sess.email= req.body.user.email;
+
+      req.session.cookie.expires = false;
+
+      console.log('Bem-vindo, ' + user_name.name + ' de id ' + user_id.id)
+
+      req.session.save(function(err) {
+        console.log('session saved')
+      })
+      
     }else{
       console.log('Senha Incorreta');
       res.redirect('/login');
@@ -106,11 +128,12 @@ app.post('/login', async (req, res) => {
 })
 
 app.get('/orders', async (req, res) => {
+  var u_name = req.session.name
   try {
     let orders = await knex.select('ORDER.id', 'name', 'price', 'is_ready').from('ORDER')
       .leftOuterJoin('USER', 'ORDER.user_id' ,'USER.id').orderBy('date_time')
 
-    res.render('pages/orders', { orders })
+    res.render('pages/orders', { orders, u_name })
   }
   catch(err) { 
     console.log(err); throw err 

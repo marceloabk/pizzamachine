@@ -6,10 +6,13 @@
     <div class="row">
       <div class="col-md-12 text-center marb-35">
         <h1 class="header-h">Menu</h1>
-        <p class="header-p">Escolha uma das pizzas da casa.</p>
+        <%  if (u_name == undefined) {%>
+          <p class="header-p">Faça <a href="/login" > login </a> para poder comprar.</p>
+        <% } else{ %>
+          <p class="header-p">Escolha uma das pizzas da casa.</p>
+        <% } %>
       </div><!--col-md-12 text-center marb-35" -->
 
-      
       <% pizzas.forEach( pizza => { %>
       <div id="menu-wrapper">
 
@@ -20,6 +23,7 @@
             <!-- <button class="btn btn-primary plus menu-button plus_button" data-pizza='<%- JSON.stringify(pizza) %>'</button>+</button> -->
 
             <!-- Stripe payment -->
+          <%  if (u_name != undefined) {%>
             <form action="/order" method="POST">
               <script
                 src="https://checkout.stripe.com/checkout.js" class="stripe-button"
@@ -35,6 +39,7 @@
               <input type="hidden" name="description" value="Pizza de <%= pizza.name %>">
               <input type="hidden" name="dpizza" value='<%= JSON.stringify(pizza) %>'>
             </form>
+          <% } %>
 
             <h4 class="menu-title" data-meal-img="assets/img/restaurant/rib.jpg"><%= pizza.name %></h4>
             <span style="left: 216px; right: 44px;" class="menu-line"></span>
