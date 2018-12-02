@@ -68,7 +68,8 @@ app.get('/', async(req, res) => {
 
 
 app.get('/login', (req, res) => {
-  res.render('pages/login')
+  var u_name = req.session.name
+  res.render('pages/login', {u_name})
 })
 
 app.get('/logout', (req, res) => {
@@ -126,11 +127,12 @@ app.post('/login', async (req, res) => {
 })
 
 app.get('/orders', async (req, res) => {
+  var u_name = req.session.name
   try {
     let orders = await knex.select('ORDER.id', 'name', 'price', 'is_ready').from('ORDER')
       .leftOuterJoin('USER', 'ORDER.user_id' ,'USER.id').orderBy('date_time')
 
-    res.render('pages/orders', { orders })
+    res.render('pages/orders', { orders, u_name })
   }
   catch(err) { 
     console.log(err); throw err 

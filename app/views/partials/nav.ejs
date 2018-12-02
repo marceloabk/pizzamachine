@@ -3,12 +3,16 @@
   <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <a href="/">Início</a>
-    <a href="/users/register">Registro</a>
-    <a href="/login">Login</a>
-    <a href="/logout">Logout</a>
-    <a href="/orders">Pedidos</a>
-    <!-- <a href="#menu-list">Menu</a> -->
-    <!-- <a href="#contact">Faça sua pizza</a> -->
+
+    <%  if (!u_name) {%>
+      <a href="/users/register">Registro</a>
+      <a href="/login">Login</a>
+    <% } else{ %>
+      <a>Olá, <%= u_name %></a>
+      <a href="/orders">Pedidos</a>
+      <a href="/logout">Logout</a>
+    <% } %>
+
   </div>
   <!-- Use any element to open the sidenav -->
   <span id="openNav" class="pull-right menu-icon">☰</span>

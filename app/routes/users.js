@@ -13,17 +13,19 @@ router.use(bodyParser.urlencoded({
 router.use(bodyParser.json())
 
 router.get('/list', (req, res) => {
+  var u_name = req.session.name
   let list = []
   knex.select().table('USER').orderBy('name') // mayber filter by 'role'
     .then((rows) => {
       list = rows
-      res.render('pages/users_list', { users: list })
+      res.render('pages/users_list', { users: list, u_name })
     })
     .catch((err) => { console.log(err); throw err })
 })
 
 router.get('/register', (req, res) => {
-  res.render('pages/sign_in')
+  var u_name = req.session.name
+  res.render('pages/sign_in', {u_name})
 })
 
 router.post('/register', (req, res) => {
@@ -37,7 +39,8 @@ router.post('/register', (req, res) => {
 })
 
 router.get('/register/employee', (req, res) => {
-  res.render('pages/sign_in_employee')
+  var u_name = req.session.name
+  res.render('pages/sign_in_employee', {u_name})
 })
 
 router.post('/register/employee', (req, res) => {
@@ -67,6 +70,7 @@ router.get('/delete/:user_id', (req, res) => {
 
 router.get('/edit/:user_id', (req, res) => {
   // validate autentication to edit other users
+  var u_name = req.session.name
 
   const user_id = req.params.user_id
 
@@ -75,7 +79,7 @@ router.get('/edit/:user_id', (req, res) => {
     .then((query) => {
       user = query
       console.log(user.name)
-      res.render('pages/edit', { user })
+      res.render('pages/edit', { user, u_name })
     })
     .catch((err) => { console.log('Usuário inexistente'); console.log(err) })
 })
