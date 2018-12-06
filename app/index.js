@@ -2,7 +2,7 @@ const path = require('path')
 
 // const usersRouter = require("./routes/users")
 // const makePizza = require('./routes/make_pizza')
-const session = require('express-session');
+const session = require('express-session')
 const express = require('express')
 const knex = require('./db/connection')
 const app = express()
@@ -13,7 +13,7 @@ const authRoutes = require('./routes/auth-routes')
 const ordersRoutes = require('./routes/orders')
 require('./config/passport-setup')
 require('dotenv').load()
-const stripe = require("stripe")(process.env.SK_STRIPE);
+const stripe = require("stripe")(process.env.SK_STRIPE)
 const crypto = require('crypto')
 
 
@@ -29,17 +29,17 @@ app.use(session({
   secret: 'ssshhhhh',
   resave: true,
   saveUninitialized: false
-}));
+}))
 // this is secret is just for cookie reasons
 
 app.use(express.urlencoded({
   extended: true
-}));
+}))
 
-var sess;
+var sess
 
 app.get('/', async(req, res) => {
-  sess = req.session;
+  sess = req.session
   console.log(sess)
   var u_name = req.session.name
   console.log(u_name)
@@ -76,23 +76,23 @@ app.get('/login', (req, res) => {
 app.get('/logout', (req, res) => {
   req.session.destroy(function(err) {
     if(err) {
-      console.log(err);
+      console.log(err)
     } else {
-      res.redirect('/');
+      res.redirect('/')
     }
-  });
+  })
 })
 
 app.post('/login', async (req, res) => {
-  sess = req.session;
-  user_email = req.body.user.email
+  sess = req.session
+  var user_email = req.body.user.email
   
   //buscando usuário no banco
   var user = await knex.select().from('USER').where('email', user_email ).first()
   
   if ( typeof user == 'undefined'){
-    console.log('Email não encontrado');
-    res.redirect('/login');
+    console.log('Email não encontrado')
+    res.redirect('/login')
   }else{
     // checking password
     var pw = await knex.select('password').from('USER').where('id', user.id ).first()
@@ -108,23 +108,23 @@ app.post('/login', async (req, res) => {
       var user_id = await knex.select('id').from('USER').where('email', user_email ).first()
       sess.cookie.id = user_id.id
       sess.name = user_name.name
-      sess.email= req.body.user.email;
+      sess.email= req.body.user.email
 
-      req.session.cookie.expires = false;
+      req.session.cookie.expires = false
 
       console.log('Bem-vindo, ' + user_name.name + ' de id ' + user_id.id)
 
-      req.session.save(function(err) {
+      req.session.save(function() {
         console.log('session saved')
       })
       
     }else{
-      console.log('Senha Incorreta');
-      res.redirect('/login');
+      console.log('Senha Incorreta')
+      res.redirect('/login')
     }
   }
  
-  res.redirect('/');
+  res.redirect('/')
 })
 
 app.get('/orders', async (req, res) => {
@@ -144,11 +144,11 @@ app.post('/order', async (req, res) => {
 
   // getting the user id
   
-  sess = req.session;
+  sess = req.session
   if (sess.email){
     console.log('usuário logado')
   }else{
-    res.redirect('/login');
+    res.redirect('/login')
   }
 
   var user = await knex.select().from('USER').where('email', sess.email ).first()
@@ -156,25 +156,25 @@ app.post('/order', async (req, res) => {
  
 
   console.log('Body no create-order ==============')
-  console.log(req.body.dpizza);
+  console.log(req.body.dpizza)
   
   // const pi = JSON.parse(req.body)
   // console.log(JSON.parse(req.body.dpizza))
 
   // Token is created using Checkout or Elements!
   // Get the payment token ID submitted by the form:
-  const token = req.body.stripeToken; // Using Express
+  const token = req.body.stripeToken // Using Express
   const chargeAmount = req.body.chargeAmount
   const description = req.body.description
   // JSON.stringify
 
-  const charge = stripe.charges.create({
+  stripe.charges.create({
     amount: chargeAmount,
     currency: 'BRL',
     description: description,
     source: token,
   })
-  .catch((err) => { console.log(err); throw err });
+  .catch((err) => { console.log(err); throw err })
 
   const pizza = JSON.parse(req.body.dpizza)
 
@@ -190,8 +190,8 @@ app.post('/order', async (req, res) => {
     let order = await knex.select().from('ORDER').where('is_ready', false).orderBy('date_time')
 
     if (order.length === 1) {
-        waitRaspConnect(function(){
-	  io.emit('updatedDb', '')
+      waitRaspConnect(function(){
+      io.emit('updatedDb', '')
 	})
     }
     // res.json(pizza)
@@ -227,7 +227,7 @@ io.on('connection', function(socket){
           .update({
             is_ready: true
         })
-  	
+
         setTimeout(function (){
             socket.emit('updatedDb', '')
         },30000)
@@ -246,7 +246,7 @@ function waitRaspConnect(callback) {
         callback()
     } else {
         setTimeout(function(){
-	    waitRaspConnect(callback)
+        waitRaspConnect(callback)
         }, 5000)
     }
 }
